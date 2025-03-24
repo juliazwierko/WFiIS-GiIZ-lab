@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from MyGraph import  *
 
 def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph") -> None:
-    output_dir = "outputs/zestaw01"
+    output_dir = "outputs/02"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
