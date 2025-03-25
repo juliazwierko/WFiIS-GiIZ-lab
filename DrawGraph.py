@@ -30,7 +30,6 @@ def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph")
             xi = x0 + r * np.cos(i * alpha)
             yi = y0 + r * np.sin(i * alpha)
             pos[node] = (xi, yi)
-
    
         nx.draw(G, pos, with_labels=True, node_color="lightblue", edge_color="gray", font_weight="bold", font_size=10)
         plt.legend([legend_title], loc="upper right", fontsize=12)
