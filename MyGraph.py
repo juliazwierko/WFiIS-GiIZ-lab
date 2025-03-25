@@ -2,7 +2,10 @@ import random
 import numpy as np
 from typing import Union, List 
 from enum import Enum, auto
+import networkx as nx
+import random
 
+# Zestaw 1
 
 class GraphRepresentationType(Enum):
     """Typy reprezentacji grafu:
@@ -164,3 +167,78 @@ def random_graph_by_probability(size: int, probability: float) -> AdjacencyList:
             data[n2].append(n1)
 
     return AdjacencyList(size, data, edges)
+
+# Zestaw 2
+
+def is_graphic_sequence(sequence: list[int]) -> bool:
+    sequence = sorted(sequence, reverse=True)
+    while sequence and sequence[0] > 0:
+        if sum(sequence) % 2 == 1 or sequence[0] >= len(sequence):
+            return False
+        first = sequence.pop(0)
+        for i in range(first):
+            sequence[i] -= 1
+            if sequence[i] < 0:
+                return False
+        sequence.sort(reverse=True)
+    return True
+
+def construct_graph_from_sequence(sequence: list[int]) -> AdjacencyList:
+    if not is_graphic_sequence(sequence):
+        raise ValueError("· The given sequence is not graphic")
+    
+    print("· The given sequence is graphic")
+
+    size = len(sequence)
+    data = [[] for _ in range(size)]
+    nodes = sorted([(degree, i) for i, degree in enumerate(sequence)], reverse=True)
+    
+    while nodes and nodes[0][0] > 0:
+        degree, node = nodes.pop(0)
+        nodes.sort(reverse=True)
+        for i in range(degree):
+            neighbor_degree, neighbor = nodes[i]
+            data[node].append(neighbor)
+            data[neighbor].append(node)
+            nodes[i] = (neighbor_degree - 1, neighbor)
+        nodes.sort(reverse=True)
+    
+    return AdjacencyList(size, data, sum(sequence) // 2)
+
+
+def randomize_graph(graph: AdjacencyList, iterations: int = 100):
+    edges = [(u, v) for u in range(graph.size) for v in graph.data[u] if u < v]
+    for _ in range(iterations):
+        if len(edges) < 2:
+            break
+        (a, b), (c, d) = random.sample(edges, 2)
+        if b != c and d not in graph.data[a] and b not in graph.data[d]:
+            graph.data[a].remove(b)
+            graph.data[b].remove(a)
+            graph.data[c].remove(d)
+            graph.data[d].remove(c)
+            graph.data[a].append(d)
+            graph.data[d].append(a)
+            graph.data[c].append(b)
+            graph.data[b].append(c)
+            edges.remove((a, b))
+            edges.remove((c, d))
+            edges.append((a, d))
+            edges.append((c, b))
+
+def largest_connected_component(graph: AdjacencyList):
+    G = nx.Graph()
+    for node, neighbors in enumerate(graph.data):
+        for neighbor in neighbors:
+            G.add_edge(node, neighbor)
+    
+    largest_component = max(nx.connected_components(G), key=len)
+    subgraph = G.subgraph(largest_component)
+    
+    new_data = [[] for _ in range(len(largest_component))]
+    mapping = {node: i for i, node in enumerate(sorted(largest_component))}
+    for node in largest_component:
+        for neighbor in G[node]:
+            new_data[mapping[node]].append(mapping[neighbor])
+    
+    return AdjacencyList(len(largest_component), new_data, subgraph.number_of_edges())
