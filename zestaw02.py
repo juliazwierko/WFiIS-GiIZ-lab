@@ -3,7 +3,7 @@ from DrawGraph import *
 
 if __name__ == "__main__":
     # Zadanie 1
-    # Ssprawdzenie, czy dana sekwencja liczb naturalnych
+    # Sprawdzenie, czy dana sekwencja liczb naturalnych
     # jest ciągiem graficznym, i do konstruowania grafu prostego o stopniach
     # wierzchołków zadanych przez ciąg graficzny.
 
