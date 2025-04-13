@@ -2,7 +2,7 @@ import random
 import numpy as np
 from typing import Union, List 
 from enum import Enum, auto
-import networkx as nx
+# import networkx as nx
 import random
 
 # Zestaw 1
@@ -226,19 +226,63 @@ def randomize_graph(graph: AdjacencyList, iterations: int = 100):
             edges.append((a, d))
             edges.append((c, b))
 
+# def largest_connected_component(graph: AdjacencyList):
+#     G = nx.Graph()
+#     for node, neighbors in enumerate(graph.data):
+#         for neighbor in neighbors:
+#             G.add_edge(node, neighbor)
+    
+#     largest_component = max(nx.connected_components(G), key=len)
+#     subgraph = G.subgraph(largest_component)
+    
+#     new_data = [[] for _ in range(len(largest_component))]
+#     mapping = {node: i for i, node in enumerate(sorted(largest_component))}
+#     for node in largest_component:
+#         for neighbor in G[node]:
+#             new_data[mapping[node]].append(mapping[neighbor])
+    
+#     return AdjacencyList(len(largest_component), new_data, subgraph.number_of_edges())
+
 def largest_connected_component(graph: AdjacencyList):
-    G = nx.Graph()
-    for node, neighbors in enumerate(graph.data):
-        for neighbor in neighbors:
-            G.add_edge(node, neighbor)
-    
-    largest_component = max(nx.connected_components(G), key=len)
-    subgraph = G.subgraph(largest_component)
-    
+    def dfs(start, visited, component):
+        stack = [start]
+        while stack:
+            node = stack.pop()
+            if not visited[node]:
+                visited[node] = True
+                component.append(node)
+                for neighbor in graph.data[node]:
+                    if not visited[neighbor]:
+                        stack.append(neighbor)
+
+    n = len(graph.data)
+    visited = [False] * n
+    components = []
+
+    # Znajdź wszystkie spójne składowe
+    for node in range(n):
+        if not visited[node]:
+            component = []
+            dfs(node, visited, component)
+            components.append(component)
+    # Znajdź największą
+    largest_component = max(components, key=len)
+    largest_component.sort()
+
+    mapping = {node: i for i, node in enumerate(largest_component)}
+
     new_data = [[] for _ in range(len(largest_component))]
-    mapping = {node: i for i, node in enumerate(sorted(largest_component))}
-    for node in largest_component:
-        for neighbor in G[node]:
-            new_data[mapping[node]].append(mapping[neighbor])
-    
-    return AdjacencyList(len(largest_component), new_data, subgraph.number_of_edges())
+    edge_set = set()
+
+    for old_node in largest_component:
+        new_node = mapping[old_node]
+        for neighbor in graph.data[old_node]:
+            if neighbor in mapping:
+                new_neighbor = mapping[neighbor]
+                new_data[new_node].append(new_neighbor)
+                edge = tuple(sorted((new_node, new_neighbor)))
+                edge_set.add(edge)
+
+    edge_count = len(edge_set)
+
+    return AdjacencyList(len(largest_component), new_data, edge_count)
