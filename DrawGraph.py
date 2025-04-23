@@ -4,8 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from MyGraph import  *
 
-def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph") -> None:
-    output_dir = "outputs/02"
+def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph", output_dir = "outputs/02") -> None:
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     

@@ -39,3 +39,7 @@ if __name__ == "__main__":
         Draw(largest_component_graph, "largest_component", "Largest Connected Component")
     else:
         print("Cannot find the largest connected component.")
+    
+    
+    #my part
+    components(graph)

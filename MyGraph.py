@@ -195,13 +195,13 @@ def construct_graph_from_sequence(sequence: list[int]) -> AdjacencyList:
     
     while nodes and nodes[0][0] > 0:
         degree, node = nodes.pop(0)
-        nodes.sort(reverse=True)
+        nodes.sort(reverse=True)            # Po co sortujemy dwa razy?, tutaj jusz mamy posortowaną liste na wejściu
         for i in range(degree):
             neighbor_degree, neighbor = nodes[i]
             data[node].append(neighbor)
             data[neighbor].append(node)
             nodes[i] = (neighbor_degree - 1, neighbor)
-        nodes.sort(reverse=True)
+        nodes.sort(reverse=True)            # tu jest
     
     return AdjacencyList(size, data, sum(sequence) // 2)
 
@@ -242,6 +242,7 @@ def randomize_graph(graph: AdjacencyList, iterations: int = 100):
 #             new_data[mapping[node]].append(mapping[neighbor])
     
 #     return AdjacencyList(len(largest_component), new_data, subgraph.number_of_edges())
+
 
 def largest_connected_component(graph: AdjacencyList):
     def dfs(start, visited, component):
