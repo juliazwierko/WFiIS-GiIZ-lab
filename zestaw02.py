@@ -40,6 +40,3 @@ if __name__ == "__main__":
     else:
         print("Cannot find the largest connected component.")
     
-    
-    #my part
-    components(graph)

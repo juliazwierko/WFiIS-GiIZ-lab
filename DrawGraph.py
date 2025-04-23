@@ -4,12 +4,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from MyGraph import  *
 
-def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph", output_dir = "outputs/02") -> None:
+def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph", output_dir: str = "outputs/03", with_weights: bool = False) -> None:
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
     filepath = os.path.join(output_dir, filename)
-
+    
     if graph.type in {GraphRepresentationType.AdjacencyList, GraphRepresentationType.IncidenceMatrix}:
         graph = graph.to_AM()
 
@@ -29,8 +29,21 @@ def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph",
             xi = x0 + r * np.cos(i * alpha)
             yi = y0 + r * np.sin(i * alpha)
             pos[node] = (xi, yi)
-   
+        
         nx.draw(G, pos, with_labels=True, node_color="lightblue", edge_color="gray", font_weight="bold", font_size=10)
+        
+        
+        if with_weights:
+            for (i, j), weight in graph.weights.items():
+                if G.has_edge(i, j):
+                    G[i][j]['weight'] = weight
+                    
+        # checking whether edge weights are set properly            
+        #print(graph.weights)
+        #print(nx.get_edge_attributes(G, 'weight'))
+        
+            nx.draw_networkx_edge_labels(G, pos, edge_labels=nx.get_edge_attributes(G, 'weight'), font_size=8)
+            
         plt.legend([legend_title], loc="upper right", fontsize=12)
 
         plt.axis("off") 

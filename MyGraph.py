@@ -4,7 +4,7 @@ from typing import Union, List
 from enum import Enum, auto
 # import networkx as nx
 import random
-
+import copy
 # Zestaw 1
 
 class GraphRepresentationType(Enum):
@@ -23,14 +23,30 @@ class Graph:
     data: list[list[int]]
     edges: Union[int, None]
     type: GraphRepresentationType
+    weights: dict[tuple[int, int], int]
 
-    def __init__(self, size: int, data: list[list[int]], edges: int,):
+    def __init__(self, size: int, data: list[list[int]], edges: int, weights: dict[tuple[int, int], int] = None):
         self.data = data
         self.size = size
         self.edges = edges
+        self.weights = weights
 
     def __str__(self):
         return str(self.data)
+    
+    def add_weights(self, func):
+        self.weights = {}                       # reseting old weights
+        if self.type != GraphRepresentationType.AdjacencyList:
+            graph = self.to_AL()
+        else:
+            graph = self
+        for node, neighbors in enumerate(graph.data):
+            for neighbor in neighbors:
+                if node < neighbor:             # avoid double counting     
+                    if (node, neighbor) not in self.weights.keys():
+                        weight = func()
+                        self.weights[(node, neighbor)] = weight
+        self.weights  = dict(sorted([(edge, weight) for edge, weight in self.weights.items()], key = lambda x: x[0][0]))            # easier representation when sorted
 
 class AdjacencyMatrix(Graph): pass
 class AdjacencyList(Graph): pass
@@ -39,8 +55,13 @@ class IncidenceMatrix(Graph): pass
 class AdjacencyList(Graph):
     type: GraphRepresentationType = GraphRepresentationType.AdjacencyList
 
-    def __init__(self,size: int, data: list[list[int]], edges: int,):
-        super().__init__(size, data, edges)
+    def __init__(
+        self,size: int,
+        data: list[list[int]],
+        edges: int, 
+        weights: Union[None, dict[tuple[int, int], int]] = None,
+    ):
+        super().__init__(size, data, edges, weights)
 
     def __str__(self):
         res = f"N: {self.size} L: {self.edges}\n"
@@ -52,7 +73,7 @@ class AdjacencyList(Graph):
         new_data = np.zeros((self.size, self.size), dtype=int)
         for n1, row in enumerate(self.data):
             new_data[n1, row] = 1
-        return AdjacencyMatrix(self.size, new_data.tolist(), self.edges)
+        return AdjacencyMatrix(self.size, new_data.tolist(), self.edges, copy.deepcopy(self.weights))
 
     def to_IM(self) -> IncidenceMatrix:
         new_data = np.zeros((self.size, self.edges), dtype=int)
@@ -64,7 +85,7 @@ class AdjacencyList(Graph):
                     new_data[n2, edges] = 1  
                     edges += 1  
 
-        return IncidenceMatrix(self.size, new_data.tolist(), self.edges)
+        return IncidenceMatrix(self.size, new_data.tolist(), self.edges, copy.deepcopy(self.weights))
 
 class AdjacencyMatrix(Graph):
     type: GraphRepresentationType = GraphRepresentationType.AdjacencyMatrix
@@ -74,8 +95,9 @@ class AdjacencyMatrix(Graph):
         size: int,
         data: list[list[int]],
         edges: int,
+        weights: Union[None, dict[tuple[int, int], int]] = None,
     ):
-        super().__init__(size, data, edges)
+        super().__init__(size, data, edges, weights)
 
     def __str__(self):
         res = f"N: {self.size} L: {self.edges}\n"
@@ -91,7 +113,7 @@ class AdjacencyMatrix(Graph):
                 if self.data[n1][n2]:  # Jeśli istnieje krawędź
                     new_data[n1].append(n2)
 
-        return AdjacencyList(self.size, new_data, self.edges)
+        return AdjacencyList(self.size, new_data, self.edges, copy.deepcopy(self.weights))
 
     def to_IM(self) -> IncidenceMatrix:
         new_data = [[0 for _ in range(self.edges)] for _ in range(self.size)]
@@ -104,15 +126,14 @@ class AdjacencyMatrix(Graph):
                     edges += 1
         if edges != self.edges:
             raise ValueError("")
-        return IncidenceMatrix(self.size, new_data, self.edges)
+        return IncidenceMatrix(self.size, new_data, self.edges, copy.deepcopy(self.weights))
 
 
 class IncidenceMatrix(Graph):
     type: GraphRepresentationType = GraphRepresentationType.IncidenceMatrix
     
-    def __init__(self, size: int, data: list[list[int]], edges: int,
-    ):
-        super().__init__(size, data, edges)
+    def __init__(self, size: int, data: list[list[int]], edges: int, weights: Union[None, dict[tuple[int, int], int]] = None,):
+        super().__init__(size, data, edges, weights)
 
     def __str__(self):
         res = f"N: {self.size} L: {self.edges}\n"
@@ -129,7 +150,7 @@ class IncidenceMatrix(Graph):
                 new_data[n1][n2] = 1
                 new_data[n2][n1] = 1
 
-        return AdjacencyMatrix(self.size, new_data, self.edges)
+        return AdjacencyMatrix(self.size, new_data, self.edges, copy.deepcopy(self.weights))
 
     def to_AL(self) -> AdjacencyList:
         new_data = [[] for _ in range(self.size)]
@@ -140,7 +161,7 @@ class IncidenceMatrix(Graph):
                     nodes.append(n)
             new_data[nodes[0]].append(nodes[1])
             new_data[nodes[1]].append(nodes[0])
-        return AdjacencyList(self.size, new_data, self.edges)
+        return AdjacencyList(self.size, new_data, self.edges, copy.deepcopy(self.weights))
 
 
 def complete_edges(size: int) -> list[tuple[int, int]]:
@@ -287,3 +308,11 @@ def largest_connected_component(graph: AdjacencyList):
     edge_count = len(edge_set)
 
     return AdjacencyList(len(largest_component), new_data, edge_count)
+
+
+# Zestaw 3
+def generate_random_connected_graph(size: int, edges: int) -> AdjacencyList:
+    random_graph = generate_random_graph_by_edges(size, edges)
+    largest_connected_component_graph = largest_connected_component(random_graph)
+    return largest_connected_component_graph
+
