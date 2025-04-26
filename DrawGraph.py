@@ -4,7 +4,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from MyGraph import  *
 
-def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph", output_dir: str = "outputs/03", with_weights: bool = False) -> None:
+def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph", output_dir: str = "outputs/03", with_weights: bool = False, mst: list[tuple[int, int, int]] = None ) -> None:
+    """
+    Draws graph with optional MST and egde weights.
+
+    Args:
+        graph (Graph): The input graph
+        filename (str): Name of the output file
+        legend_title (str): Title of the graph
+        output_dir (str): Output directory
+        with_weights (bool): Whether to display edge weights
+        mst (list[tuple[int, int, int]]): List of MST edges in the format (u, v, w)
+    """
+    
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
@@ -40,8 +52,12 @@ def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph",
             nx.draw_networkx_edge_labels(G, pos, edge_labels=nx.get_edge_attributes(G, 'weight'), font_size=8, label_pos=0.55)
             
         # checking whether edge weights are set properly            
-        print(f'graph.weights : {graph.weights}')            # wagi krawędzi są zawsze posortowane według pierwszego weirzchołka a pary zawsze sa od mniejszego do większego
-        #print(nx.get_edge_attributes(G, 'weight'))
+        # print(f'graph.weights : {graph.weights}')            # wagi krawędzi są zawsze posortowane według pierwszego weirzchołka a pary zawsze sa od mniejszego do większego
+        # print(nx.get_edge_attributes(G, 'weight'))
+          
+        if mst:
+            mst_edges = [(u, v) for u, v, _ in mst]
+            nx.draw_networkx_edges(G, pos, edgelist=mst_edges, edge_color="red", width=2)
             
         plt.legend([legend_title], loc="upper right", fontsize=12)
 

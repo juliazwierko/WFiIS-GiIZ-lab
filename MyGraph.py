@@ -1,10 +1,11 @@
 import random
 import numpy as np
-from typing import Union, List 
+from typing import Union
 from enum import Enum, auto
-# import networkx as nx
 import random
 import copy
+import heapq
+
 # Zestaw 1
 
 class GraphRepresentationType(Enum):
@@ -390,3 +391,66 @@ def find_graph_center_and_minimax_based_on_distance_matrix(M: list[list[int]]) -
     center = np.argmin(sums)
     minimax = np.argmin(max_paths)
     return (center, sums[center]), (minimax, max_paths[minimax])
+
+
+def prim(graph: Graph, start_node: int) -> tuple[list[int], list[int], list[tuple[int, int, int]]]:
+    if graph.type != GraphRepresentationType.AdjacencyList:
+        graph = graph.to_AL()
+    
+    T = [start_node]
+    W = [i for i in range(graph.size) if i != start_node]
+    mst = []
+    edges = []
+    
+    for neighbor in graph.data[start_node]:
+        weight = graph.weights[(start_node, neighbor)] if start_node < neighbor else graph.weights[(neighbor, start_node)]
+        heapq.heappush(edges, (weight, start_node, neighbor))     
+    
+    while len(T) < graph.size:
+        weight,u, v = heapq.heappop(edges)
+        if v in W:
+            mst.append((u, v, weight))
+            T.append(v)
+            W.remove(v)
+
+            for neighbor in graph.data[v]: 
+                if neighbor in W:
+                    weight = graph.weights[(v, neighbor)] if v<neighbor else graph.weights[(neighbor, v)]
+                    heapq.heappush(edges, (weight, v, neighbor))
+
+    return T, W, mst
+
+
+def kruskal(graph: Graph) -> tuple[list[int], list[int], list[tuple[int, int, int]]]:
+    if graph.type != GraphRepresentationType.AdjacencyList:
+        graph = graph.to_AL()
+    
+    edges = [(w,u,v) for (u,v), w in graph.weights.items()]
+    edges.sort()
+    parent = {v: v for v in range(graph.size)}  
+    rank = {v: 0 for v in range(graph.size)}
+    
+    def find(v):
+        if parent[v] != v:
+            parent[v] = find(parent[v])
+        return parent[v]
+    
+    def union(u, v):
+        root_u = find(u)
+        root_v = find(v)
+        if root_u != root_v:
+            if rank[root_u] > rank[root_v]:
+                parent[root_v] = root_u
+            elif rank[root_u] < rank[root_v]:
+                parent[root_u] = root_v
+            else:
+                parent[root_v] = root_u
+                rank[root_u] += 1
+                
+    mst = []
+    for w, u, v in edges:
+        if find(u) != find(v):  
+            union(u, v)       
+            mst.append((u, v, w)) 
+                
+    return mst
