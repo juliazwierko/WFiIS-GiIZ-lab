@@ -25,9 +25,9 @@ if __name__ == '__main__':
     print_matrix_nicely(M)
     
     # Zadanie 4
-    # Wyznaczyć centrum grafu, to znaczy wierzchołek, którego suma od-
-    # ległości do pozostałych wierzchołków jest minimalna. Wyznaczyć cen-
-    # trumminimax, toznaczywierzchołek, któregoodległośćdonajdalszego
-    # wierzchołka jest minimalna.
-    
+    # Wyznaczyć centrum grafu, to znaczy wierzchołek, którego suma odległości do pozostałych wierzchołków jest minimalna. 
+    # Wyznaczyć centrum minimax, to znaczy wierzchołek, którego odległość do najdalszego wierzchołka jest minimalna.
+    center, minimax = find_graph_center_and_minimax_based_on_distance_matrix(M)
+    print(f'Centrum = {center[0]} (suma odleglosci: {center[1]})')
+    print(f'Centrum minimax = {minimax[0]} (odleglosc od najdalszego: {minimax[1]})')
     
