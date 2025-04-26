@@ -311,8 +311,72 @@ def largest_connected_component(graph: AdjacencyList):
 
 
 # Zestaw 3
+
 def generate_random_connected_graph(size: int, edges: int) -> AdjacencyList:
     random_graph = generate_random_graph_by_edges(size, edges)
     largest_connected_component_graph = largest_connected_component(random_graph)
     return largest_connected_component_graph
 
+
+def relax(u:int, v:int, weights: dict[tuple[int, int], int] , d: dict[int, int], p: dict[int, Union[int, None]]):
+    w = weights[(u, v)] if u < v else weights[(v, u)]     
+    if d[v] > d[u] + w:
+        d[v] = d[u] + w
+        p[v] = u
+
+
+def dijkstra(graph: Graph, start_node: int) -> tuple[dict[int, int], dict[int, list[int]]]: 
+    if graph.type != GraphRepresentationType.AdjacencyList:
+        graph = graph.to_AL()
+    # Init
+    distances = {v: 1e10 for v in range(graph.size)}  # ds[v]
+    predecessors = {v: None for v in range(graph.size)}       # ps[v]
+    distances[start_node] = 0
+    visited = set()                                           # S
+    
+    while len(visited) < graph.size:
+        current_vertex = min((v for v in range(graph.size) if v not in visited), key=lambda v: distances[v]) 
+        visited.add(current_vertex)                            # S = S ∪ {u}
+        for neighbor in graph.data[current_vertex]:
+            if neighbor not in visited:
+                relax(current_vertex, neighbor, graph.weights, distances, predecessors)  
+        #print(f"Visited: {visited}, Distances: {distances}, Predecessors: {predecessors}")      # Sprawdzenie działania algorytmu
+    #print(f"Final Distances: {distances}, Predecessors: {predecessors}")  # Sprawdzenie działania algorytmu     disctances - ready distances, predecessors - only previous for each of vertices
+    
+    paths = {}
+    for vertex in predecessors:
+        path = [vertex]
+        while predecessors[vertex] is not None:
+            path.append( predecessors[vertex])
+            vertex = predecessors[vertex]
+        paths[path[0]] = path[::-1]
+    
+    #print(paths)
+    print(f'START: s = {start_node}')
+    for i in range(graph.size):
+        print(f'd({i})  = {distances[i]:3}   ==> [{' - '.join([str(v) for v in paths[i]])}]')  
+    return distances, paths
+
+
+def get_distance_matrix(graph: Graph) -> np.ndarray:
+    M = []
+    print(M)
+    for vertice in range(graph.size):
+        print(vertice)
+        distances, _ = dijkstra(graph, vertice)
+        M.append([v for v in distances.values()])
+    return M
+
+def print_matrix_nicely(matrix: list[list[int]]) -> None:
+    print(' ', end='   ')
+    for i in range(len(matrix)):
+        print(f'{i:2}', end = ' ')
+    print()   
+    print(' ', end='  ')
+    for i in range(len(matrix)):
+        print(f'---', end = '')
+    print()
+    for i,row in enumerate(matrix):
+        print(f'{i:2}|', end = ' ')
+        print(" ".join(f'{el:2}' for el in row))
+    print()

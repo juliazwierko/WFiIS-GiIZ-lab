@@ -37,12 +37,11 @@ def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph",
             for (i, j), weight in graph.weights.items():
                 if G.has_edge(i, j):
                     G[i][j]['weight'] = weight
-                    
+            nx.draw_networkx_edge_labels(G, pos, edge_labels=nx.get_edge_attributes(G, 'weight'), font_size=8, label_pos=0.55)
+            
         # checking whether edge weights are set properly            
-        #print(graph.weights)
+        print(f'graph.weights : {graph.weights}')            # wagi krawędzi są zawsze posortowane według pierwszego weirzchołka a pary zawsze sa od mniejszego do większego
         #print(nx.get_edge_attributes(G, 'weight'))
-        
-            nx.draw_networkx_edge_labels(G, pos, edge_labels=nx.get_edge_attributes(G, 'weight'), font_size=8)
             
         plt.legend([legend_title], loc="upper right", fontsize=12)
 
