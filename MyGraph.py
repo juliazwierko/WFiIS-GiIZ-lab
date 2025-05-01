@@ -311,6 +311,104 @@ def largest_connected_component(graph: AdjacencyList):
     return AdjacencyList(len(largest_component), new_data, edge_count)
 
 
+# Zestaw 2 (4-6)
+
+def generate_eulerian_graph(n: int) -> AdjacencyList:
+    if n < 1:
+        raise ValueError("Number of vertices must be positive")
+    while True:
+        seq = [random.randrange(2, n + 1 if n % 2 == 0 else n, 2) for _ in range(n)]
+        if sum(seq) % 2 == 0 and is_graphic_sequence(seq):
+            return construct_graph_from_sequence(seq)
+
+def find_eulerian_cycle(graph: AdjacencyList) -> list[int]:
+    g = copy.deepcopy(graph)
+    cycle = []
+    stack = [0]
+
+    def count_components(g_copy: AdjacencyList) -> int:
+        visited = [False] * g_copy.size
+
+        def dfs(u):
+            visited[u] = True
+            for v in g_copy.data[u]:
+                if not visited[v]:
+                    dfs(v)
+
+        comps = 0
+        for u in range(g_copy.size):
+            if not visited[u]:
+                dfs(u)
+                comps += 1
+        return comps
+
+    while stack:
+        u = stack[-1]
+        if g.data[u]:
+            for v in list(g.data[u]):
+                g.data[u].remove(v)
+                g.data[v].remove(u)
+                comps_after = count_components(g)
+                g.data[u].append(v)
+                g.data[v].append(u)
+                if comps_after == 1 or len(g.data[u]) == 1:
+                    g.data[u].remove(v)
+                    g.data[v].remove(u)
+                    stack.append(v)
+                    break
+        else:
+            cycle.append(stack.pop())
+    return cycle
+
+def generate_k_regular_graph(n: int, k: int) -> AdjacencyList:
+    if k >= n or (n * k) % 2 != 0:
+        raise ValueError("Invalid parameters for k-regular graph")
+    stubs = [v for v in range(n) for _ in range(k)]
+    while True:
+        random.shuffle(stubs)
+        edges = set()
+        simple = True
+        for i in range(0, len(stubs), 2):
+            u, v = stubs[i], stubs[i + 1]
+            if u == v or (u, v) in edges or (v, u) in edges:
+                simple = False
+                break
+            edges.add((u, v))
+        if not simple:
+            continue
+        data = [[] for _ in range(n)]
+        for u, v in edges:
+            data[u].append(v)
+            data[v].append(u)
+        return AdjacencyList(n, data, len(edges))
+
+def find_hamiltonian_cycle(graph: AdjacencyList) -> list[int] | None:
+    n = graph.size
+    adj = graph.data
+    visited = [False] * n
+    path: list[int] = []
+
+    def backtrack(u: int) -> bool:
+        path.append(u)
+        visited[u] = True
+        if len(path) == n:
+            if path[0] in adj[u]:
+                path.append(path[0])
+                return True
+        else:
+            for v in adj[u]:
+                if not visited[v]:
+                    if backtrack(v):
+                        return True
+        visited[u] = False
+        path.pop()
+        return False
+
+    for start in range(n):
+        if backtrack(start):
+            return path
+    return None
+
 # Zestaw 3
 
 def generate_random_connected_graph(size: int, edges: int) -> AdjacencyList:
