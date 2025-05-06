@@ -17,7 +17,7 @@ if __name__ == '__main__':
     # go do grafu z zadania pierwszego, w którym wagi krawędzi interpreto-
     # wane są jako odległości wierzchołków. Wypisać wszystkie najkrótsze
     # ścieżki od danego wierzchołka i ich długości.
-    distances, paths = dijkstra(g, 0)
+    distances, paths = dijkstra(g, 0, print_paths=True)
     print('*'*100)
     
     # Zadanie 3
@@ -43,6 +43,7 @@ if __name__ == '__main__':
     print(f'{W=}')
     print(f'{mst_prim=}')
     print('Kruskal:')
-    mst_krukal = kruskal(g)
-    print(f'{mst_krukal=}')
-    Draw(g, "random_connected_graph_mst", "Random Connected Graph with MST", output_dir="outputs/03", with_weights=True, mst= mst_prim)
+    mst_kruskal = kruskal(g)
+    print(f'{mst_kruskal=}')
+    Draw(g, "graph_mst_prim", "Random Connected Graph with MST Prim", output_dir="outputs/03", with_weights=True, mst= mst_prim)
+    Draw(g, "graph_mst_kruskal", "Random Connected Graph with MST Kruskal", output_dir="outputs/03", with_weights=True, mst= mst_kruskal)

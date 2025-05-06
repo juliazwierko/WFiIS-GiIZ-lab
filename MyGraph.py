@@ -424,14 +424,15 @@ def relax(u:int, v:int, weights: dict[tuple[int, int], int] , d: dict[int, int],
         p[v] = u
 
 
-def dijkstra(graph: Graph, start_node: int) -> tuple[dict[int, int], dict[int, list[int]]]: 
+def dijkstra(graph: Graph, start_node: int, print_paths: bool = False) -> tuple[dict[int, int], dict[int, list[int]]]: 
     if graph.type != GraphRepresentationType.AdjacencyList:
         graph = graph.to_AL()
 
-    distances = {v: 1e10 for v in range(graph.size)}          # ds[v]
-    predecessors = {v: None for v in range(graph.size)}       # ps[v]
+    # inicjalizacja
+    distances = {v: 1e10 for v in range(graph.size)}          
+    predecessors = {v: None for v in range(graph.size)}       
     distances[start_node] = 0
-    visited = set()                                           # S
+    visited = set()                                           
     
     while len(visited) < graph.size:
         current_vertex = min((v for v in range(graph.size) if v not in visited), key=lambda v: distances[v]) 
@@ -450,10 +451,12 @@ def dijkstra(graph: Graph, start_node: int) -> tuple[dict[int, int], dict[int, l
             vertex = predecessors[vertex]
         paths[path[0]] = path[::-1]
     
-    #print(paths)
-    print(f'START: s = {start_node}')
-    for i in range(graph.size):
-        print(f'd({i})  = {distances[i]:3}   ==> [{' - '.join([str(v) for v in paths[i]])}]')  
+    if print_paths:
+        print(f'Paths = {paths}')
+        print(f'START: s = {start_node}')
+        for i in range(graph.size):
+            print(f'd({i})  = {distances[i]:3}   ==> [{' - '.join([str(v) for v in paths[i]])}]')  
+    
     return distances, paths
 
 
@@ -461,7 +464,6 @@ def get_distance_matrix(graph: Graph) -> np.ndarray:
     M = []
     print(M)
     for vertice in range(graph.size):
-        print(vertice)
         distances, _ = dijkstra(graph, vertice)
         M.append([v for v in distances.values()])
     return M
@@ -492,6 +494,8 @@ def find_graph_center_and_minimax_based_on_distance_matrix(M: list[list[int]]) -
 
 
 def prim(graph: Graph, start_node: int) -> tuple[list[int], list[int], list[tuple[int, int, int]]]:
+    from DrawGraph import Draw
+    
     if graph.type != GraphRepresentationType.AdjacencyList:
         graph = graph.to_AL()
     
@@ -504,13 +508,18 @@ def prim(graph: Graph, start_node: int) -> tuple[list[int], list[int], list[tupl
         weight = graph.weights[(start_node, neighbor)] if start_node < neighbor else graph.weights[(neighbor, start_node)]
         heapq.heappush(edges, (weight, start_node, neighbor))     
     
+    i=0
     while len(T) < graph.size:
+        i += 1
+        # print(f'T = {T}')
+        # print(f'W = {W}')
+        # print(f'edges = {edges}')
         weight,u, v = heapq.heappop(edges)
         if v in W:
             mst.append((u, v, weight))
             T.append(v)
             W.remove(v)
-
+            Draw(graph, filename=f"mst_step_{i}.png", legend_title=f"MST Step {i}", output_dir='outputs/03/mst_steps_prim', with_weights=True, mst=mst)
             for neighbor in graph.data[v]: 
                 if neighbor in W:
                     weight = graph.weights[(v, neighbor)] if v<neighbor else graph.weights[(neighbor, v)]
@@ -520,6 +529,9 @@ def prim(graph: Graph, start_node: int) -> tuple[list[int], list[int], list[tupl
 
 
 def kruskal(graph: Graph) -> tuple[list[int], list[int], list[tuple[int, int, int]]]:
+    
+    from DrawGraph import Draw
+    
     if graph.type != GraphRepresentationType.AdjacencyList:
         graph = graph.to_AL()
     
@@ -546,9 +558,12 @@ def kruskal(graph: Graph) -> tuple[list[int], list[int], list[tuple[int, int, in
                 rank[root_u] += 1
                 
     mst = []
+    i = 0
     for w, u, v in edges:
         if find(u) != find(v):  
             union(u, v)       
             mst.append((u, v, w)) 
+        i += 1
+        Draw(graph, filename=f"kruskal_step_{i}.png", legend_title=f"Kruskal Step {i}", output_dir="outputs/03/mst_steps_kruskal", with_weights=True, mst=mst)
                 
     return mst
