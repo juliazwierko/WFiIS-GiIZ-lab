@@ -520,7 +520,7 @@ def dijkstra(graph: Graph, start_node: int, print_paths: bool = False) -> tuple[
         print(f'Paths = {paths}')
         print(f'START: s = {start_node}')
         for i in range(graph.size):
-            print(f'd({i})  = {distances[i]:3}   ==> [{' - '.join([str(v) for v in paths[i]])}]')  
+            print(f'd({i})  = {distances[i]:3}   ==> [{" - ".join(str(v) for v in paths[i])}]') 
     
     return distances, paths
 
