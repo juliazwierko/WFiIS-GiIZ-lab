@@ -64,6 +64,6 @@ def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph",
         plt.axis("off") 
         plt.savefig(filepath, dpi=300, bbox_inches="tight")
         plt.close()
-        print(f"Graf zapisany jako {filename}")
+        # print(f"Graf zapisany jako {filename}")
     except Exception as e:
         print(f"Błąd podczas rysowania grafu: {e}")

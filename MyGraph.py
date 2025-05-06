@@ -6,35 +6,37 @@ import random
 import copy
 import heapq
 
-# Zestaw 1
+# -----------------------------  Zestaw 1  -----------------------------------
 
+# GraphRepresentationType - dziedziczy po Enum.
+# Będzie reprezentować różne sposoby przedstawiania grafu.
 class GraphRepresentationType(Enum):
-    """Typy reprezentacji grafu:
-    1) AdjacencyList - Reprezentacja grafu jako lista sąsiedztwa.
-    2) AdjacencyMatrix - Reprezentacja grafu jako macierz sąsiedztwa.
-    3) IncidenceMatrix - Reprezentacja grafu jako macierz incydencji.
-    """
-    AdjacencyList = auto()      # Reprezentacja grafu jako lista sąsiedztwa
-    AdjacencyMatrix = auto()    # Reprezentacja grafu jako macierz sąsiedztwa
-    IncidenceMatrix = auto()    # Reprezentacja grafu jako macierz incydencji
+    AdjacencyList = auto()     
+    AdjacencyMatrix = auto()   
+    IncidenceMatrix = auto()   
 
 
+# Deklaracja klasy bazowej Graph, która będzie wspólna dla różnych 
+# reprezentacji grafów. Zawiera podstawowe właściwości i metody.
 class Graph:
-    size: int
-    data: list[list[int]]
-    edges: Union[int, None]
-    type: GraphRepresentationType
-    weights: dict[tuple[int, int], int]
+    size: int                               # liczba wierzchołków w grafie
+    data: list[list[int]]                   # struktura grafu w postaci listy list liczb całkowitych. 
+    edges: Union[int, None]                 # liczba krawędzi w Grafie
+    type: GraphRepresentationType           # określa typ reprezentacji grafu na podstawie enuma GraphRepresentationType (linijka 13)
+    weights: dict[tuple[int, int], int]     # mapowanie par wierzchołkow na ich wage - zostało dodano w trakcie wykonywania zestawu 3
 
+    # Konstruktor klasy Graph
     def __init__(self, size: int, data: list[list[int]], edges: int, weights: dict[tuple[int, int], int] = None):
         self.data = data
         self.size = size
         self.edges = edges
         self.weights = weights
 
+    # Reprezentacja tekstowa obiektów klasy Graph
     def __str__(self):
         return str(self.data)
     
+    # Dodanie losowych (lub określonych) wag do krawędzi grafu, używając funkcji func() jako generatora wag.
     def add_weights(self, func):
         self.weights = {}                       # reseting old weights
         if self.type != GraphRepresentationType.AdjacencyList:
@@ -54,8 +56,10 @@ class AdjacencyList(Graph): pass
 class IncidenceMatrix(Graph): pass
 
 class AdjacencyList(Graph):
+    # Deklaracja stalej klasy
     type: GraphRepresentationType = GraphRepresentationType.AdjacencyList
 
+    # Konstruktor - wywoluje konstruktor klasy bazowej Graph
     def __init__(
         self,size: int,
         data: list[list[int]],
@@ -64,24 +68,49 @@ class AdjacencyList(Graph):
     ):
         super().__init__(size, data, edges, weights)
 
+    # Reprezentacja tekstowa:
+    # N - liczba wierzcholkow; L - liczba krawedzi
+    # Zapis postaci: wierzcholek: sąsiedzi
     def __str__(self):
         res = f"N: {self.size} L: {self.edges}\n"
         for index, neighbors in enumerate(self.data):
             res += f"{index}: {neighbors}\n"
         return res
 
+    # Tworzenie grafu na podstawie pliku tekstowego
+    @classmethod
+    def from_txt(cls, lines: list[str]) -> "AdjacencyList":
+        data = []
+        edges = 0
+        for line in lines:
+            if not line.strip():
+                continue
+            parts = line.strip().split(":")
+            neighbors = list(map(int, parts[1].strip().split()))
+            neighbors = [n - 1 for n in neighbors]  # przekształcamy z 1-based na 0-based
+            data.append(neighbors)
+            edges += len(neighbors)
+
+        edges //= 2  # graf nieskierowany
+        size = len(data)
+        return cls(size, data, edges)
+
+    # Konwertuje graf z listy sąsiedztwa na macierz sąsiedztwa.
+    # n1 - kazdy wierzcholek, row - lista jego sąsiadów
     def to_AM(self) -> AdjacencyMatrix:
         new_data = np.zeros((self.size, self.size), dtype=int)
         for n1, row in enumerate(self.data):
             new_data[n1, row] = 1
         return AdjacencyMatrix(self.size, new_data.tolist(), self.edges, copy.deepcopy(self.weights))
 
+    # Konwertuje listę sąsiedztwa na macierz incydencji
+    # n1 - kazdy wierzcholek, n2 - kazdy jego sąsiad
     def to_IM(self) -> IncidenceMatrix:
         new_data = np.zeros((self.size, self.edges), dtype=int)
         edges = 0  
         for n1, neighbors in enumerate(self.data):
             for n2 in neighbors:
-                if n1 < n2:  
+                if n1 < n2: # nie dodajemy tej samej krawedzi dwa razy! np. (1,2) (2,1)
                     new_data[n1, edges] = 1  
                     new_data[n2, edges] = 1  
                     edges += 1  
@@ -89,8 +118,10 @@ class AdjacencyList(Graph):
         return IncidenceMatrix(self.size, new_data.tolist(), self.edges, copy.deepcopy(self.weights))
 
 class AdjacencyMatrix(Graph):
+    # Deklaracja stalej klasy
     type: GraphRepresentationType = GraphRepresentationType.AdjacencyMatrix
 
+    # Konstruktor - wywoluje konstruktor klasy bazowej Graph
     def __init__(
         self,
         size: int,
@@ -100,12 +131,24 @@ class AdjacencyMatrix(Graph):
     ):
         super().__init__(size, data, edges, weights)
 
+    # Reprezentacja tekstowa:
+    # N - liczba wierzcholkow; L - liczba krawedzi
+    # Zapis postaci: macierz o wartosciach 0/1
     def __str__(self):
         res = f"N: {self.size} L: {self.edges}\n"
         for neighbors in self.data:
             res += f"{neighbors}\n"
         return res
 
+    @classmethod
+    # Wczytuje graf z pliku tekstowego w formacie:
+    def from_txt(cls, lines: list[str]) -> "AdjacencyMatrix":
+        data = [list(map(int, line.strip().split())) for line in lines if line.strip()]
+        size = len(data)
+        edges = sum(sum(row) for row in data) // 2  # nieskierowany
+        return cls(size, data, edges)
+
+    # Konwersja do listy sąsiedztwa
     def to_AL(self) -> AdjacencyList:
         new_data = [[] for _ in range(self.size)]  
 
@@ -116,9 +159,11 @@ class AdjacencyMatrix(Graph):
 
         return AdjacencyList(self.size, new_data, self.edges, copy.deepcopy(self.weights))
 
+    # Konwersja do macierzy incydencji
     def to_IM(self) -> IncidenceMatrix:
         new_data = [[0 for _ in range(self.edges)] for _ in range(self.size)]
         edges = 0
+        # iterujemy po wszystkich parach (n1, n2) w macierzy
         for n1, row in enumerate(self.data):
             for n2, val in enumerate(row):
                 if n1 > n2 and val:
@@ -129,23 +174,37 @@ class AdjacencyMatrix(Graph):
             raise ValueError("")
         return IncidenceMatrix(self.size, new_data, self.edges, copy.deepcopy(self.weights))
 
-
+# Reprezentacja grafu za pomocą macierzy incydencji
 class IncidenceMatrix(Graph):
+    # Deklaracja stalej klasy
     type: GraphRepresentationType = GraphRepresentationType.IncidenceMatrix
     
+    # Konstruktor - wywoluje konstruktor klasy bazowej Graph
     def __init__(self, size: int, data: list[list[int]], edges: int, weights: Union[None, dict[tuple[int, int], int]] = None,):
         super().__init__(size, data, edges, weights)
 
+    # Reprezentacja tekstowa:
+    # N - liczba wierzcholkow; L - liczba krawedzi
+    # Zapis postaci: macierz o wartosciach 0/1
     def __str__(self):
         res = f"N: {self.size} L: {self.edges}\n"
         for neighbors in self.data:
             res += f"{neighbors}\n"
         return res
 
+    # Tworzenie macierzy incydencji na podstawie pliku tekstowego
+    @classmethod   
+    def from_txt(cls, lines: list[str]) -> "IncidenceMatrix":
+        data = [list(map(int, line.strip().split())) for line in lines if line.strip()]
+        size = len(data)
+        edges = len(data[0]) if data else 0
+        return cls(size, data, edges)
+
+    # Konwersja do macierzy sąsiedstwa
     def to_AM(self) -> AdjacencyMatrix:
         new_data = [[0 for _ in range(self.size)] for _ in range(self.size)]
-        for edge in zip(*self.data):
-            nodes = [n for n, val in enumerate(edge) if val]
+        for edge in zip(*self.data): # iteracja po kolumnach, zip transponuje macierz, kazda iteracja to jedna kolumna
+            nodes = [n for n, val in enumerate(edge) if val] # indeksy wierzcholkow kotre biora udzial w tej krawedzi
             if len(nodes) == 2:
                 n1, n2 = nodes
                 new_data[n1][n2] = 1
@@ -153,8 +212,9 @@ class IncidenceMatrix(Graph):
 
         return AdjacencyMatrix(self.size, new_data, self.edges, copy.deepcopy(self.weights))
 
+    # Konwersja do listy sąsiedstwa
     def to_AL(self) -> AdjacencyList:
-        new_data = [[] for _ in range(self.size)]
+        new_data = [[] for _ in range(self.size)] # lista sasiadow dla kazdego wierzcholka
         for edge in zip(*self.data):
             nodes = []
             for n, val in enumerate(edge):
@@ -165,9 +225,12 @@ class IncidenceMatrix(Graph):
         return AdjacencyList(self.size, new_data, self.edges, copy.deepcopy(self.weights))
 
 
+# Generacja wszystkich możliwych krawędzi w grafie nieskierowanym dla danego rozmiaru grafu (liczby wierzchołków).
 def complete_edges(size: int) -> list[tuple[int, int]]:
     return [(x, y) for x in range(size) for y in range(x + 1, size)]
  
+# Generuje losowy graf nieskierowany o zadanej liczbie wierzchołków i krawędzi. 
+# Wynikowy graf jest reprezentowany jako lista sąsiedztwa (Adjacency List).
 def generate_random_graph_by_edges(size: int, edges: int) -> AdjacencyList:
     data = [[] for _ in range(size)]  
     edge_list = random.sample(complete_edges(size), edges)
@@ -178,6 +241,8 @@ def generate_random_graph_by_edges(size: int, edges: int) -> AdjacencyList:
 
     return AdjacencyList(size, data, edges)
 
+# Generuje losowy graf nieskierowany o zadanej liczbie wierzchołków oraz
+# prawdopodobienstwa istnienia kazdej z mozliwych krawedzi. 
 def random_graph_by_probability(size: int, probability: float) -> AdjacencyList:
     data = [[] for _ in range(size)]  
     edges = 0
@@ -190,7 +255,7 @@ def random_graph_by_probability(size: int, probability: float) -> AdjacencyList:
 
     return AdjacencyList(size, data, edges)
 
-# Zestaw 2
+# -----------------------------  Zestaw 2  -----------------------------------
 
 def is_graphic_sequence(sequence: list[int]) -> bool:
     sequence = sorted(sequence, reverse=True)
@@ -409,7 +474,7 @@ def find_hamiltonian_cycle(graph: AdjacencyList) -> list[int] | None:
             return path
     return None
 
-# Zestaw 3
+# -----------------------------  Zestaw 3  -----------------------------------
 
 def generate_random_connected_graph(size: int, edges: int) -> AdjacencyList:
     random_graph = generate_random_graph_by_edges(size, edges)
@@ -519,7 +584,7 @@ def prim(graph: Graph, start_node: int) -> tuple[list[int], list[int], list[tupl
             mst.append((u, v, weight))
             T.append(v)
             W.remove(v)
-            Draw(graph, filename=f"mst_step_{i}.png", legend_title=f"MST Step {i}", output_dir='outputs/03/mst_steps_prim', with_weights=True, mst=mst)
+
             for neighbor in graph.data[v]: 
                 if neighbor in W:
                     weight = graph.weights[(v, neighbor)] if v<neighbor else graph.weights[(neighbor, v)]
