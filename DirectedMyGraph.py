@@ -30,6 +30,13 @@ class DirectedAdjacencyList:
                 lines.append(f"{u}:")
         return '\n'.join(lines)
 
+    def copy(self) -> "DirectedAdjacencyList":
+        new = DirectedAdjacencyList(self.n)
+        new.m = self.m
+        # skopiuj listy sąsiedztwa
+        new.adj = [nbrs.copy() for nbrs in self.adj]
+        return new
+
 class DirectedAdjacencyMatrix:
     """
     Prosty graf skierowany reprezentowany jako macierz sąsiedztwa.
