@@ -7,20 +7,35 @@ if __name__ == "__main__":
     # jest ciągiem graficznym, i do konstruowania grafu prostego o stopniach
     # wierzchołków zadanych przez ciąg graficzny.
 
+
+    # sequence = [3, 3, 2, 2, 1, 1]  # graphic
+
+    # https://d3gt.com/unit.html?graphic-sequence
+    # sequence = [4,4,3,1,2]  # not graphic
+    # sequence = [4, 2, 2, 3, 2, 1, 4, 2, 2, 2, 2]
     # sequence = [3, 3, 2, 2, 2, 1]  # not graphic
-    sequence = [3, 3, 2, 2, 1, 1]  # graphic
+    sequence = [5, 3, 3, 3, 2, 2, 0]
+    
 
     graph = None
 
     if is_graphic_sequence(sequence):
-        graph = construct_graph_from_sequence(sequence)
-        print("Graph created from the graphic sequence:")
-        print(graph)
-        Draw(graph, "graph_from_sequence", "Graph from Graphic Sequence")
+        try:
+            adjacency_data = construct_graph_from_sequence(sequence)
+            edge_count = sum(len(neighbors) for neighbors in adjacency_data) // 2
+            graph = AdjacencyList(len(sequence), adjacency_data, edge_count)
+
+            print("Graph created from the graphic sequence:")
+            print(graph)
+            Draw(graph, "graph_from_sequence", "Graph from Graphic Sequence")
+
+        except ValueError as e:
+            print("Error while constructing the graph:", e)
+
     else:
         print("The given sequence is not graphic")
 
-    # Zadanie 2
+    # # Zadanie 2
     # Zamień losowo wybraną parę krawędzi: ab i cd na parę ad i bc.
     if graph is not None:
         randomize_graph(graph, 50)

@@ -260,7 +260,9 @@ def random_graph_by_probability(size: int, probability: float) -> AdjacencyList:
 def is_graphic_sequence(sequence: list[int]) -> bool:
     sequence = sorted(sequence, reverse=True)
     while sequence and sequence[0] > 0:
-        if sum(sequence) % 2 == 1 or sequence[0] >= len(sequence):
+        if all(x == 0 for x in sequence):
+            return True
+        if sequence[0] >= len(sequence) or any(x < 0 for x in sequence):
             return False
         first = sequence.pop(0)
         for i in range(first):
@@ -270,27 +272,43 @@ def is_graphic_sequence(sequence: list[int]) -> bool:
         sequence.sort(reverse=True)
     return True
 
-def construct_graph_from_sequence(sequence: list[int]) -> AdjacencyList:
+def construct_graph_from_sequence(sequence: list[int]) -> list[list[int]]:
     if not is_graphic_sequence(sequence):
-        raise ValueError("· The given sequence is not graphic")
-    
-    print("· The given sequence is graphic")
+        raise ValueError("The given sequence is not graphic")
+
+    print("The given sequence is graphic")
 
     size = len(sequence)
     data = [[] for _ in range(size)]
-    nodes = sorted([(degree, i) for i, degree in enumerate(sequence)], reverse=True)
-    
-    while nodes and nodes[0][0] > 0:
+
+    nodes = [(degree, i) for i, degree in enumerate(sequence)]
+
+    while any(degree > 0 for degree, _ in nodes):
+        nodes = [node for node in nodes if node[0] > 0]
+        if not nodes:
+            break
+
+        nodes.sort(reverse=True)
         degree, node = nodes.pop(0)
-        nodes.sort(reverse=True)            # Po co sortujemy dwa razy?, tutaj jusz mamy posortowaną liste na wejściu
+
+        if degree > len(nodes):
+            raise ValueError(f"Cannot assign {degree} edges to node {node}")
+
         for i in range(degree):
             neighbor_degree, neighbor = nodes[i]
+
+            if node == neighbor:
+                raise ValueError("Loop detected, invalid graph.")
+            
+            if neighbor in data[node]:
+                raise ValueError("Multiple edges detected, invalid graph.")
+
             data[node].append(neighbor)
             data[neighbor].append(node)
+
             nodes[i] = (neighbor_degree - 1, neighbor)
-        nodes.sort(reverse=True)            # tu jest
-    
-    return AdjacencyList(size, data, sum(sequence) // 2)
+
+    return data
 
 
 def randomize_graph(graph: AdjacencyList, iterations: int = 100):
@@ -312,23 +330,6 @@ def randomize_graph(graph: AdjacencyList, iterations: int = 100):
             edges.remove((c, d))
             edges.append((a, d))
             edges.append((c, b))
-
-# def largest_connected_component(graph: AdjacencyList):
-#     G = nx.Graph()
-#     for node, neighbors in enumerate(graph.data):
-#         for neighbor in neighbors:
-#             G.add_edge(node, neighbor)
-    
-#     largest_component = max(nx.connected_components(G), key=len)
-#     subgraph = G.subgraph(largest_component)
-    
-#     new_data = [[] for _ in range(len(largest_component))]
-#     mapping = {node: i for i, node in enumerate(sorted(largest_component))}
-#     for node in largest_component:
-#         for neighbor in G[node]:
-#             new_data[mapping[node]].append(mapping[neighbor])
-    
-#     return AdjacencyList(len(largest_component), new_data, subgraph.number_of_edges())
 
 
 def largest_connected_component(graph: AdjacencyList):

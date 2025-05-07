@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from MyGraph import  *
 
-def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph", output_dir: str = "outputs/03", with_weights: bool = False, mst: list[tuple[int, int, int]] = None ) -> None:
+def Draw(graph: Graph, filename: str = "graph.png", legend_title: str = "Graph", output_dir: str = "outputs/04_test", with_weights: bool = False, mst: list[tuple[int, int, int]] = None ) -> None:
     """
     Draws graph with optional MST and egde weights.
 
