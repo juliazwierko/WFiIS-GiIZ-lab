@@ -585,7 +585,8 @@ def prim(graph: Graph, start_node: int) -> tuple[list[int], list[int], list[tupl
             mst.append((u, v, weight))
             T.append(v)
             W.remove(v)
-
+            Draw(graph, filename=f"mst_step_{i}.png", legend_title=f"MST Step {i}", output_dir='outputs/03/mst_steps_prim', with_weights=True, mst=mst)
+            
             for neighbor in graph.data[v]: 
                 if neighbor in W:
                     weight = graph.weights[(v, neighbor)] if v<neighbor else graph.weights[(neighbor, v)]
