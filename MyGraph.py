@@ -494,7 +494,6 @@ def dijkstra(graph: Graph, start_node: int, print_paths: bool = False) -> tuple[
     if graph.type != GraphRepresentationType.AdjacencyList:
         graph = graph.to_AL()
 
-    # inicjalizacja
     distances = {v: 1e10 for v in range(graph.size)}          
     predecessors = {v: None for v in range(graph.size)}       
     distances[start_node] = 0

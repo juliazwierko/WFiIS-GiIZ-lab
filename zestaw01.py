@@ -30,7 +30,7 @@ if __name__ == "__main__":
     
     # generacja dla plikow tekstowych
     print("----------------- WCZYTYWANIE Z PLIKU -----------------")
-    with open("lista.txt") as f: # lista sasiedstwa (przyklad wziety z "Przykładowe wejście – zestaw 1.")
+    with open("inputs/01/lista.txt") as f: # lista sasiedstwa (przyklad wziety z "Przykładowe wejście – zestaw 1.")
         al = AdjacencyList.from_txt(f.readlines())
     print("Wczytana lista sąsiedztwa:\n", al)
     am =  al.to_AM()
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     Draw(im, "im01", "graph from Incidence Matrix", "outputs/01")
 
 
-    with open("macierz.txt") as f: # macierz sasiedstwa (przyklad wziety z "Przykładowe wejście – zestaw 1.")
+    with open("inputs/01/macierz.txt") as f: # macierz sasiedstwa (przyklad wziety z "Przykładowe wejście – zestaw 1.")
         am = AdjacencyMatrix.from_txt(f.readlines())
     print("\nWczytana macierz sąsiedztwa:\n", am)
     al = am.to_AL()
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     Draw(am, "am02", "graph from Adjacency Matrix", "outputs/01")
     Draw(im, "im02", "graph from Incidence Matrix", "outputs/01")
 
-    with open("incydencja.txt") as f: # macierz incydencji (przyklad wziety z "Przykładowe wejście – zestaw 1.")
+    with open("inputs/01/incydencja.txt") as f: # macierz incydencji (przyklad wziety z "Przykładowe wejście – zestaw 1.")
         im = IncidenceMatrix.from_txt(f.readlines())  
     print("\nWczytana macierz incydencji:\n", im)
     al = im.to_AL()
