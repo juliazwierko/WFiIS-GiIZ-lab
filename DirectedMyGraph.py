@@ -37,6 +37,19 @@ class DirectedAdjacencyList:
         new.adj = [nbrs.copy() for nbrs in self.adj]
         return new
 
+    def num_vertices(self) -> int:
+        """Zwraca liczbę wierzchołków grafu."""
+        return self.n
+
+    def out_degree(self, u: int) -> int:
+        """Zwraca liczbę łuków wychodzących z wierzchołka u."""
+        return len(self.adj[u])
+
+    def out_neighbors(self, u: int) -> list[int]:
+        """Zwraca listę wierzchołków, do których wychodzą łuki z u."""
+        return self.adj[u]
+
+
 class DirectedAdjacencyMatrix:
     """
     Prosty graf skierowany reprezentowany jako macierz sąsiedztwa.
