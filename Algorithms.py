@@ -73,7 +73,7 @@ def pagerank_random_walk(graph: DirectedAdjacencyList, steps: int = 1_000_000, d
             if neighbors:
                 current = random.choice(neighbors)
             else:
-                # jeśli jednak nie ma wyjść (najcichszy "haczyki"), teleportujemy
+                # jeśli nie ma wyjść = teleportujemy
                 current = random.randrange(n)
         visits[current] += 1
     # Normalizacja do sumy 1
@@ -99,7 +99,7 @@ def pagerank_power_iteration(graph: DirectedAdjacencyList,
                     new_pr[v] += pr[u] / n
         # Dodanie teleportacji (część (1-d) do każdego wierzchołka)
         new_pr = [(1-d)/n + d * x for x in new_pr]
-        # Sprawdzenie zbieżności (norma L1 różnicy wektorów)
+        # Sprawdzenie zbieżności
         diff = sum(abs(new_pr[i] - pr[i]) for i in range(n))
         pr = new_pr
         if diff < epsilon:
