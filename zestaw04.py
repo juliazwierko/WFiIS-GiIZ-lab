@@ -44,7 +44,7 @@ if __name__ == "__main__":
     # plt.show()
 
     # Zadanie 2
-    # Zaimplementować algorytm Kosaraju do szukania silnie spójnych skła dowych na digrafie i zastosować go do digrafu losowego
+    # Zaimplementować algorytm Kosaraju do szukania silnie spójnych składowych na digrafie i zastosować go do digrafu losowego
 
     # Przykładowe użycie: wygeneruj losowy graf i zastosuj algorytm
     # g_list = generate_random_directed_graph_by_probability(n, p)

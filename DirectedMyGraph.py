@@ -105,7 +105,7 @@ class DirectedIncidenceMatrix:
             return '\n'.join('' for _ in range(self.n))
         lines = []
         for u in range(self.n):
-            lines.append(' '.join(str(self.matrix[u][e]) for e in range(self.m)))
+            lines.append(' '.join(f'{self.matrix[u][e]:2}' for e in range(self.m)))
         return '\n'.join(lines)
 
 
