@@ -79,15 +79,14 @@ def Draw_Flow_Network(graph: FlowNetwork, legend_title: str, filename: str = 'fl
         layers = graph.internal_layers
         pos = {}
         for layer_idx, layer in enumerate(layers):
-            y_step = 1.0
-            #y_step = 1.0 / (len(layer) + 1)
+            y_step = 1.0 / (len(layer) + 1)
             for i, node in enumerate(layer):
                 pos[node] = (layer_idx, (i + 1) * y_step)
 
         plt.figure(figsize=(10, 5))
-        nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray', font_size = 10, arrows=True, connectionstyle="arc3,rad=0.1")
+        nx.draw(G, pos = pos, with_labels=True, node_color='lightblue', edge_color='gray', font_size = 10, arrows=True, connectionstyle="arc3,rad=0.1")
         edge_labels = nx.get_edge_attributes(G, 'weight')
-        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, connectionstyle="arc3,rad=0.1")
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, connectionstyle="arc3,rad=0.1", font_size=8, label_pos=0.55)
         plt.legend([legend_title], loc="upper center", fontsize=12)
         plt.axis('off')
         plt.savefig(filepath, dpi=300, bbox_inches='tight')

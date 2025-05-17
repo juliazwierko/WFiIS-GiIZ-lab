@@ -79,7 +79,14 @@ def get_layers_from_network(network: FlowNetwork, start_node: int = 0) -> list[l
                 level[v] = level[node] + 1
                 visited.add(v)
                 queue.append(v)
-    return [layers[i] for i in range(max(level.values()) + 1)]    
+    
+    maximum_layer = max(level.values())
+    sink = max(layers[maximum_layer])
+    layers[maximum_layer].remove(sink)
+    maximum_layer += 1
+    layers.setdefault(maximum_layer,[]).append(sink)
+    
+    return [layers[i] for i in range(maximum_layer + 1)]    
 
     
 def generate_random_flow_network(nmbr_inter_layers: int, probability: float) -> FlowNetwork:
