@@ -1,4 +1,6 @@
 from DirectedMyGraph import *
+from collections import deque
+import random
 
 # Zestaw 4 (1-2) ------------------------------------------------------------
 def kosaraju(graph: DirectedAdjacencyList) -> dict[int, int]:
@@ -56,6 +58,87 @@ def kosaraju(graph: DirectedAdjacencyList) -> dict[int, int]:
             dfs_assign(v)
 
     return component_map
+
+
+
+# Zestaw 5 ------------------------------------------------------------
+        
+def get_layers_from_network(network: FlowNetwork, start_node: int = 0) -> list[list[int]]:
+    visited = set([start_node])
+    queue = deque([start_node])
+    
+    level = {start_node: 0}
+    layers = {}
+    
+    while queue:
+        node = queue.popleft()
+        layers.setdefault(level[node], []).append(node)
+        neigbours = [v for (u, v), _ in network.weighted_edges.items() if u == node]
+        for v in neigbours:
+            if v not in visited or level[v] > level[node] + 1:
+                level[v] = level[node] + 1
+                visited.add(v)
+                queue.append(v)
+    return [layers[i] for i in range(max(level.values()) + 1)]    
+
+    
+def generate_random_flow_network(nmbr_inter_layers: int, probability: float) -> FlowNetwork:
+    network = FlowNetwork(15)
+    prev_layer = [0]
+    curr_vert = 0
+    for _ in range(nmbr_inter_layers):
+        new_layer = []
+        remaining = prev_layer[:]
+        
+        for i in range(nmbr_inter_layers):                 
+            if i < 2 or random.random() < probability:     
+                curr_vert += 1
+                node = None
+                if not remaining:
+                    node = random.choice(prev_layer)
+                else:
+                    node = random.choice(remaining)
+                    remaining.remove(node)
+                network.add_edge(node, curr_vert, func = lambda: random.randint(1,10))
+                new_layer.append(curr_vert)
+        if remaining:          
+            for node in remaining:
+                network.add_edge(node, random.choice(new_layer), func = lambda: random.randint(1,10))
+        prev_layer = new_layer
+        
+    curr_vert += 1          
+    for node in prev_layer:
+        network.add_edge(node, random.choice(prev_layer), func = lambda: random.randint(1,10))
+    network.n = curr_vert + 1   
+    network.internal_layers = get_layers_from_network(network)
+    
+    for _ in range(2*nmbr_inter_layers):
+        u = random.choice(range(1, curr_vert))    
+        v = random.choice(range(1, curr_vert))
+        added = False
+        limit = nmbr_inter_layers                        
+        while not added and limit > 0:
+            if u != v and not network.edge_exists(u, v) and not network.edge_exists(v, u):
+                network.add_edge(u, v, func = lambda: random.randint(1,10))
+                added = True
+            else:
+                u = random.choice(range(1, curr_vert))
+                v = random.choice(range(1, curr_vert))
+                limit -= 1
+        
+        if limit <= 0 and not added:                       
+            for u in range(1, curr_vert):
+                for v in range(1, curr_vert):
+                    if u != v and not network.edge_exists(u, v) and not network.edge_exists(v, u) and not added:
+                        network.add_edge(u, v, func = lambda: random.randint(1,10))
+                        added = True
+        if not added:
+            return network
+        
+    return network
+    
+                
+
 
 
 # Zestaw 6 (1) ------------------------------------------------------------

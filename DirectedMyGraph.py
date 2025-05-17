@@ -8,8 +8,9 @@ class DirectedAdjacencyList:
         self.n = n
         self.m = 0
         self.adj = [[] for _ in range(n)]
+        self.weighted_edges = {}
 
-    def add_edge(self, u, v):
+    def add_edge(self, u, v, func = lambda:random.randint(1,10)):
         """
         Dodaje skierowany łuk u -> v (bez pętli i duplikatów).
         """
@@ -19,6 +20,7 @@ class DirectedAdjacencyList:
             if v not in self.adj[u]:
                 self.adj[u].append(v)
                 self.m += 1
+                self.weighted_edges[(u, v)] = func()
 
     def __str__(self):
         lines = []
@@ -125,4 +127,18 @@ def generate_random_directed_graph_by_probability(n, p):
             if u != v and random.random() < p:
                 g.add_edge(u, v)
     return g
+
+class FlowNetwork(DirectedAdjacencyList):
+    def __init__(self, size: int):
+        super().__init__(size)
+        self.internal_layers: list[list[int]] = None
+        
+    def edge_exists(self, u: int, v: int) -> bool:
+        return (u, v) in self.weighted_edges
+    
+    ## TODO adding edges differently ??? maybe
+        
+
+
+
 
