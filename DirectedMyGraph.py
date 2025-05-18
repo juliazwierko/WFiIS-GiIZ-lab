@@ -136,7 +136,8 @@ class FlowNetwork(DirectedAdjacencyList):
     def edge_exists(self, u: int, v: int) -> bool:
         return (u, v) in self.weighted_edges
     
-    ## TODO adding edges differently ??? maybe
+    def refactor_adjacency_matrix(self, new_n):
+        self.adj = [[self.adj[n]] for n in range(new_n)]
         
 
 

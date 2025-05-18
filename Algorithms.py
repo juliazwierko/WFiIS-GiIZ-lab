@@ -80,19 +80,16 @@ def get_layers_from_network(network: FlowNetwork, start_node: int = 0) -> list[l
                 visited.add(v)
                 queue.append(v)
     
-    maximum_layer = max(level.values())
-    sink = max(layers[maximum_layer])
-    layers[maximum_layer].remove(sink)
-    maximum_layer += 1
-    layers.setdefault(maximum_layer,[]).append(sink)
-    
-    return [layers[i] for i in range(maximum_layer + 1)]    
+    return [layers[i] for i in range(max(level.values()) + 1)]    
 
     
 def generate_random_flow_network(nmbr_inter_layers: int, probability: float) -> FlowNetwork:
-    network = FlowNetwork(15)
+    
+    network = FlowNetwork(20)
     prev_layer = [0]
     curr_vert = 0
+    layers_to_remember = [prev_layer]
+    
     for _ in range(nmbr_inter_layers):
         new_layer = []
         remaining = prev_layer[:]
@@ -112,12 +109,18 @@ def generate_random_flow_network(nmbr_inter_layers: int, probability: float) -> 
             for node in remaining:
                 network.add_edge(node, random.choice(new_layer), func = lambda: random.randint(1,10))
         prev_layer = new_layer
+        layers_to_remember.append(prev_layer)
+     
+    curr_vert += 1   
+    layers_to_remember.append([curr_vert])
         
-    curr_vert += 1          
     for node in prev_layer:
-        network.add_edge(node, random.choice(prev_layer), func = lambda: random.randint(1,10))
+        network.add_edge(node, curr_vert, func = lambda: random.randint(1,10))
     network.n = curr_vert + 1   
     network.internal_layers = get_layers_from_network(network)
+    network.refactor_adjacency_matrix(curr_vert + 1)
+    #print(network)
+    #print()
     
     for _ in range(2*nmbr_inter_layers):
         u = random.choice(range(1, curr_vert))    
@@ -142,6 +145,7 @@ def generate_random_flow_network(nmbr_inter_layers: int, probability: float) -> 
         if not added:
             return network
         
+    #print(network)
     return network
     
                 

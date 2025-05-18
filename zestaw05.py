@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # należy następnie dodać 2N łuków w sposób losowy. Łuki mają być losowane bez preferencji kierunku, tzn. nie muszą być skierowane zgodnie z warstwami. 
     # Należy jednak zwrócić uwagę, żeby nie dodać łuku już istniejącego i żeby nie dodać łuku wchodzącego do źródła albo wychodzącego z ujścia. 
     # Na tak otrzymanym digrafie przypisać każdemu łukowi liczbę naturalną z zakresu [1, 10] mającą interpretację przepustowości. Zakodować i narysować otrzymaną sieć.
-    network = generate_random_flow_network(3, 0.5)
+    network = generate_random_flow_network(4, 0.5)
     Draw_Flow_Network(network, legend_title='Flow Network', filename = 'flow_network.png', output_dir='outputs/05')
     
     # Zadanie 2
