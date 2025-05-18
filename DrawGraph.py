@@ -76,7 +76,7 @@ def Draw_Flow_Network(graph: FlowNetwork, legend_title: str, filename: str = 'fl
         weighted_edges = [(u, v, w) for (u, v), w in graph.weighted_edges.items()]
         G.add_weighted_edges_from(weighted_edges)
 
-        layers = graph.internal_layers
+        layers = graph.network_layers
         pos = {}
         for layer_idx, layer in enumerate(layers):
             y_step = 1.0 / (len(layer) + 1)

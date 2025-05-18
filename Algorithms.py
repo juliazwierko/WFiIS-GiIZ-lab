@@ -88,7 +88,6 @@ def generate_random_flow_network(nmbr_inter_layers: int, probability: float) -> 
     network = FlowNetwork(20)
     prev_layer = [0]
     curr_vert = 0
-    layers_to_remember = [prev_layer]
     
     for _ in range(nmbr_inter_layers):
         new_layer = []
@@ -109,24 +108,21 @@ def generate_random_flow_network(nmbr_inter_layers: int, probability: float) -> 
             for node in remaining:
                 network.add_edge(node, random.choice(new_layer), func = lambda: random.randint(1,10))
         prev_layer = new_layer
-        layers_to_remember.append(prev_layer)
      
     curr_vert += 1   
-    layers_to_remember.append([curr_vert])
-        
     for node in prev_layer:
         network.add_edge(node, curr_vert, func = lambda: random.randint(1,10))
     network.n = curr_vert + 1   
-    network.internal_layers = get_layers_from_network(network)
+    network.network_layers = get_layers_from_network(network)
     network.refactor_adjacency_matrix(curr_vert + 1)
-    #print(network)
-    #print()
+    # print(network)
+    # print()
     
     for _ in range(2*nmbr_inter_layers):
         u = random.choice(range(1, curr_vert))    
         v = random.choice(range(1, curr_vert))
         added = False
-        limit = nmbr_inter_layers                        
+        limit = 5 * nmbr_inter_layers                        
         while not added and limit > 0:
             if u != v and not network.edge_exists(u, v) and not network.edge_exists(v, u):
                 network.add_edge(u, v, func = lambda: random.randint(1,10))

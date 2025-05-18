@@ -131,13 +131,13 @@ def generate_random_directed_graph_by_probability(n, p):
 class FlowNetwork(DirectedAdjacencyList):
     def __init__(self, size: int):
         super().__init__(size)
-        self.internal_layers: list[list[int]] = None
+        self.network_layers: list[list[int]] = None
         
     def edge_exists(self, u: int, v: int) -> bool:
         return (u, v) in self.weighted_edges
     
     def refactor_adjacency_matrix(self, new_n):
-        self.adj = [[self.adj[n]] for n in range(new_n)]
+        self.adj = [self.adj[n] for n in range(new_n)]
         
 
 
