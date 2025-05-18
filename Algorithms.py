@@ -1,5 +1,5 @@
 from DirectedMyGraph import *
-from collections import deque
+from collections import deque, defaultdict
 import random
 
 # Zestaw 4 (1-2) ------------------------------------------------------------
@@ -144,9 +144,50 @@ def generate_random_flow_network(nmbr_inter_layers: int, probability: float) -> 
     #print(network)
     return network
     
-                
+def bfs(residual_graph, source, sink, parent):
+    visited = set()
+    queue = deque([source])
+    visited.add(source)
+    
+    while queue:
+        u = queue.popleft()
+        for v in residual_graph[u]:
+            if v not in visited and residual_graph[u][v] > 0:
+                visited.add(v)
+                parent[v] = u
+                if v == sink:
+                    return True
+                queue.append(v)
+    return False
 
 
+def ford_fulkerson_edmonds_karp(graph, source, sink):
+    residual_graph = defaultdict(dict)
+    for (u, v), capacity in graph.weighted_edges.items():
+        residual_graph[u][v] = capacity
+        if v not in residual_graph or u not in residual_graph[v]:
+            residual_graph[v][u] = 0  
+
+    parent = {}
+    max_flow = 0
+
+    while bfs(residual_graph, source, sink, parent):
+        path_flow = float('inf')
+        s = sink
+        while s != source:
+            path_flow = min(path_flow, residual_graph[parent[s]][s])
+            s = parent[s]
+        v = sink
+        while v != source:
+            u = parent[v]
+            residual_graph[u][v] -= path_flow
+            residual_graph[v][u] += path_flow
+            v = parent[v]
+
+        max_flow += path_flow
+        parent.clear()
+
+    return max_flow, residual_graph
 
 # Zestaw 6 (1) ------------------------------------------------------------
 
