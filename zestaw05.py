@@ -1,5 +1,4 @@
-from Algorithms import generate_random_flow_network
-from Algorithms import bfs, ford_fulkerson_edmonds_karp
+from Algorithms import *
 from DrawGraph import *
 
 if __name__ == '__main__':
@@ -24,7 +23,6 @@ if __name__ == '__main__':
     source = 0
     sink = network.n - 1
 
-    max_flow, residual_graph = ford_fulkerson_edmonds_karp(network, source, sink)
+    max_flow, residual_graph = ford_fulkerson_edmonds_karp_with_debug(network, source, sink)
     print("Maksymalny przepływ:", max_flow)
-    
-    Draw_Residual_Network(graph=network, residual_graph=residual_graph, legend_title='Residual Network', filename='residual_network.png', output_dir='outputs/05')
+    Draw_Residual_Network(graph=network, residual_graph=residual_graph, legend_title='Residual Network', filename='residual_network.png', output_dir='outputs/05/')    

@@ -1,6 +1,8 @@
 from DirectedMyGraph import *
 from collections import deque, defaultdict
+from DrawGraph import *
 import random
+
 
 # Zestaw 4 (1-2) ------------------------------------------------------------
 def kosaraju(graph: DirectedAdjacencyList) -> dict[int, int]:
@@ -143,49 +145,82 @@ def generate_random_flow_network(nmbr_inter_layers: int, probability: float) -> 
         
     #print(network)
     return network
-    
-def bfs(residual_graph, source, sink, parent):
-    visited = set()
-    queue = deque([source])
+
+# Funkcja BFS, która szuka najkrótszej ścieżki powiększającej(p) w grafie rezydualnym
+def bfs_with_trace(residual_graph, source, sink, parent):
+    visited = set()             # Zbiór odwiedzonych wierzchołków
+    queue = deque([source])     # Kolejka BFS, zaczynamy od źródła
     visited.add(source)
-    
+    parent[source] = None    
+
     while queue:
-        u = queue.popleft()
-        for v in residual_graph[u]:
-            if v not in visited and residual_graph[u][v] > 0:
+        u = queue.popleft()                                    # Bierzemy pierwszy wierzchołek z kolejki
+        for v in residual_graph[u]:                            # Dla każdego sąsiada u
+            if v not in visited and residual_graph[u][v] > 0:  # Jeśli nie był odwiedzony i jest przepustowość
                 visited.add(v)
-                parent[v] = u
-                if v == sink:
-                    return True
+                parent[v] = u       # Zapamiętujemy ścieżkę
                 queue.append(v)
-    return False
+                if v == sink:      
+                    return True, list(visited) 
+    return False, list(visited)    
 
-
-def ford_fulkerson_edmonds_karp(graph, source, sink):
+# Główna funkcja algorytmu Ford-Fulkerson z podejściem Edmondsa-Karpa + rysowanie iteracji
+def ford_fulkerson_edmonds_karp_with_debug(graph, source, sink):
     residual_graph = defaultdict(dict)
+    
     for (u, v), capacity in graph.weighted_edges.items():
-        residual_graph[u][v] = capacity
+        residual_graph[u][v] = capacity # Początkowa przepustowość
         if v not in residual_graph or u not in residual_graph[v]:
-            residual_graph[v][u] = 0  
+            residual_graph[v][u] = 0    # Krawędź wsteczna ma na start 0
 
-    parent = {}
-    max_flow = 0
+    parent = {}          # Słownik śledzenia ścieżki
+    max_flow = 0         # Początkowy przepływ
+    step_counter = 1   
 
-    while bfs(residual_graph, source, sink, parent):
+    # Startowy graf
+    Draw_Residual_Network(graph=graph,residual_graph=residual_graph,legend_title=f"Step {step_counter}: Initial Residual Graph",filename=f"step_{step_counter}.png")
+    step_counter += 1
+
+    # Główna pętla — szukamy ścieżek powiększających
+    while True:
+        # Używamy BFS do znalezienia ścieżki powiększającej (czyli takiej, po której można 
+        # coś jeszcze przesłać). Jeśli nie znajdziemy takiej ścieżki, to kończymy.
+        found, visited_nodes = bfs_with_trace(residual_graph, source, sink, parent)
+
+        if not found:
+            Draw_Residual_Network(graph=graph,residual_graph=residual_graph,legend_title=f"Step {step_counter}: No more augmenting paths",filename=f"step_{step_counter}.png",visited_nodes=visited_nodes)
+            break
+        
+        # Idziemy od końca do początku i szukamy minimalnej dostępnej przepustowości
+        # Sprawdzamy każdą krawędź na ścieżce od końca do początku i wybieramy najmniejszą 
+        # przepustowość — bo więcej niż to nie da się przesłać.
         path_flow = float('inf')
         s = sink
         while s != source:
-            path_flow = min(path_flow, residual_graph[parent[s]][s])
+            path_flow = min(path_flow, residual_graph[parent[s]][s]) # residual_graph[parent[s]][s] to dostępna przepustowość tej krawędzi.
             s = parent[s]
+        
+        # Aktualizujemy przepływy w grafie rezydualnym
         v = sink
         while v != source:
             u = parent[v]
-            residual_graph[u][v] -= path_flow
-            residual_graph[v][u] += path_flow
+            residual_graph[u][v] -= path_flow   # Przepustowość do przodu zmniejszamy
+            residual_graph[v][u] += path_flow   # Przepustowość wstecz zwiększamy
             v = parent[v]
 
-        max_flow += path_flow
-        parent.clear()
+        # Wypisanie znalezionej ścieżki
+        augmenting_path = []
+        v = sink
+        while v is not None:
+            augmenting_path.append(v)
+            v = parent[v]
+        augmenting_path = list(reversed(augmenting_path))
+        print(f"Step {step_counter}: Found augmenting path: {' -> '.join(map(str, augmenting_path))} with flow = {path_flow}")
+
+        max_flow += path_flow # Zwiększamy całkowity przepływ
+        parent.clear()        # Czyścimy rodziców na kolejne szukanie
+        Draw_Residual_Network(graph=graph, residual_graph=residual_graph, legend_title=f"Step {step_counter}: After path, flow += {path_flow}",filename=f"step_{step_counter}.png",visited_nodes=visited_nodes)
+        step_counter += 1
 
     return max_flow, residual_graph
 

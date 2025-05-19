@@ -98,7 +98,9 @@ def Draw_Flow_Network(graph: FlowNetwork, legend_title: str, filename: str = 'fl
         print(f"Błąd podczas rysowania grafu: {e}")
 
 
-def Draw_Residual_Network(graph: FlowNetwork, residual_graph: dict, legend_title: str, filename: str = 'residual_network.png', output_dir: str = "outputs/05"):
+def Draw_Residual_Network(graph: FlowNetwork, residual_graph: dict, legend_title: str,
+                          filename: str = 'residual_network.png', output_dir: str = "outputs/05",
+                          visited_nodes: list = None):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     filepath = os.path.join(output_dir, filename)
@@ -126,12 +128,14 @@ def Draw_Residual_Network(graph: FlowNetwork, residual_graph: dict, legend_title
         edge_labels = nx.get_edge_attributes(G, 'weight')
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, connectionstyle="arc3,rad=0.1", font_size=8, label_pos=0.55)
 
-        plt.legend([legend_title], loc="upper center", fontsize=12)
+        legend_text = legend_title
+        if visited_nodes:
+            legend_text += "\nVisited: " + ", ".join(str(v) for v in visited_nodes)
+
+        plt.legend([legend_text], loc="upper center", fontsize=10)
         plt.axis('off')
         plt.savefig(filepath, dpi=300, bbox_inches='tight')
         plt.close()
-
-        print(f"Residualny graf zapisany jako {filepath}")
 
     except Exception as e:
         print(f"Błąd podczas rysowania grafu residualnego: {e}")
