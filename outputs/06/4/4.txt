@@ -1,0 +1,38 @@
+outer_iter_values = [500]
+inner_iter_values = [10000]
+
+
+[INFO] Próba 1/10 z parametrami: outer=500, inner=10000
+  Final cost: 599.57, Iterations: 4885942, Last temp: 0.001000000
+
+[INFO] Próba 2/10 z parametrami: outer=500, inner=10000
+  Final cost: 599.63, Iterations: 4886995, Last temp: 0.001000000
+
+[INFO] Próba 3/10 z parametrami: outer=500, inner=10000
+  Final cost: 593.81, Iterations: 4885588, Last temp: 0.001000000
+
+[INFO] Próba 4/10 z parametrami: outer=500, inner=10000
+  Final cost: 601.04, Iterations: 4886705, Last temp: 0.001000000
+
+[INFO] Próba 5/10 z parametrami: outer=500, inner=10000
+  Final cost: 610.99, Iterations: 4886052, Last temp: 0.001000000
+
+[INFO] Próba 6/10 z parametrami: outer=500, inner=10000
+  Final cost: 599.93, Iterations: 4886121, Last temp: 0.001000000
+
+[INFO] Próba 7/10 z parametrami: outer=500, inner=10000
+  Final cost: 606.86, Iterations: 4885915, Last temp: 0.001000000
+
+[INFO] Próba 8/10 z parametrami: outer=500, inner=10000
+  Final cost: 609.78, Iterations: 4885593, Last temp: 0.001000000
+
+[INFO] Próba 9/10 z parametrami: outer=500, inner=10000
+  Final cost: 614.38, Iterations: 4885855, Last temp: 0.001000000
+
+[INFO] Próba 10/10 z parametrami: outer=500, inner=10000
+  Final cost: 591.69, Iterations: 4886266, Last temp: 0.001000000
+
+=== Podsumowanie wyników ===
+Najlepszy koszt: 591.69
+Najgorszy koszt: 614.38
+Średni koszt z 10 prób: 602.77

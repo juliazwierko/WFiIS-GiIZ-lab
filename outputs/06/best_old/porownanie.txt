@@ -1,0 +1,12 @@
+[INFO] Testing: initial_temp=5000.00, alpha=0.999999, last_temp=0.000000001
+  Final cost: 585.11
+
+=== Najlepsze znalezione parametry ===
+Initial Temp: 5000
+Alfa: 0.9999985
+Najlepszy koszt: 585.11
+Zapisano wykres trasy do: ./outputs/06/best_route.png
+Zapisano wykres kosztu (liniowy) do: ./outputs/06/best_cost.png
+Zapisano wykres kosztu (log-x) do: ./outputs/06/best_cost_logx.png
+
+max_iter=50 000 000

@@ -21,6 +21,13 @@ class DirectedAdjacencyList:
                 self.adj[u].append(v)
                 self.m += 1
                 self.weighted_edges[(u, v)] = func()
+                
+    def set_edge_weight(self, u, v, weight: int):
+        """
+        Ustawia wagę łuku (u, v), jeśli istnieje.
+        """
+        if v in self.adj[u]:
+            self.weighted_edges[(u, v)] = weight
 
     def __str__(self):
         lines = []

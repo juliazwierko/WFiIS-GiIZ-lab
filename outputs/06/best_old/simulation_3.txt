@@ -1,0 +1,412 @@
+initial_temp_values = np.linspace(4000, 5000, 10)
+alpha_values = np.linspace(0.99992, 0.99995, 20)
+
+[fedora@krzemon Grafy]$ python3 zestaw06.py
+[INFO] Testing: initial_temp=4000.00, alpha=0.999920, last_temp=0.000570418
+  Final cost: 610.84
+[INFO] Testing: initial_temp=4000.00, alpha=0.999922, last_temp=0.000785038
+  Final cost: 635.15
+[INFO] Testing: initial_temp=4000.00, alpha=0.999923, last_temp=0.001065786
+  Final cost: 642.88
+[INFO] Testing: initial_temp=4000.00, alpha=0.999925, last_temp=0.001469640
+  Final cost: 632.39
+[INFO] Testing: initial_temp=4000.00, alpha=0.999926, last_temp=0.002000141
+  Final cost: 612.34
+[INFO] Testing: initial_temp=4000.00, alpha=0.999928, last_temp=0.002712259
+  Final cost: 653.65
+[INFO] Testing: initial_temp=4000.00, alpha=0.999929, last_temp=0.003714916
+  Final cost: 627.85
+[INFO] Testing: initial_temp=4000.00, alpha=0.999931, last_temp=0.005104996
+  Final cost: 631.85
+[INFO] Testing: initial_temp=4000.00, alpha=0.999933, last_temp=0.006926611
+  Final cost: 658.60
+[INFO] Testing: initial_temp=4000.00, alpha=0.999934, last_temp=0.009467133
+  Final cost: 649.67
+[INFO] Testing: initial_temp=4000.00, alpha=0.999936, last_temp=0.012894557
+  Final cost: 629.87
+[INFO] Testing: initial_temp=4000.00, alpha=0.999937, last_temp=0.017635028
+  Final cost: 648.92
+[INFO] Testing: initial_temp=4000.00, alpha=0.999939, last_temp=0.024008410
+  Final cost: 632.59
+[INFO] Testing: initial_temp=4000.00, alpha=0.999941, last_temp=0.032704730
+  Final cost: 626.21
+[INFO] Testing: initial_temp=4000.00, alpha=0.999942, last_temp=0.044545052
+  Final cost: 625.30
+[INFO] Testing: initial_temp=4000.00, alpha=0.999944, last_temp=0.060894354
+  Final cost: 623.52
+[INFO] Testing: initial_temp=4000.00, alpha=0.999945, last_temp=0.083136737
+  Final cost: 619.27
+[INFO] Testing: initial_temp=4000.00, alpha=0.999947, last_temp=0.113452949
+  Final cost: 611.94
+[INFO] Testing: initial_temp=4000.00, alpha=0.999948, last_temp=0.154976821
+  Final cost: 625.63
+[INFO] Testing: initial_temp=4000.00, alpha=0.999950, last_temp=0.211380265
+  Final cost: 642.27
+[INFO] Testing: initial_temp=4111.11, alpha=0.999920, last_temp=0.000591492
+  Final cost: 621.06
+[INFO] Testing: initial_temp=4111.11, alpha=0.999922, last_temp=0.000811159
+  Final cost: 684.09
+[INFO] Testing: initial_temp=4111.11, alpha=0.999923, last_temp=0.001104011
+  Final cost: 636.11
+[INFO] Testing: initial_temp=4111.11, alpha=0.999925, last_temp=0.001498235
+  Final cost: 634.70
+[INFO] Testing: initial_temp=4111.11, alpha=0.999926, last_temp=0.002041962
+  Final cost: 670.84
+[INFO] Testing: initial_temp=4111.11, alpha=0.999928, last_temp=0.002804737
+  Final cost: 638.83
+[INFO] Testing: initial_temp=4111.11, alpha=0.999929, last_temp=0.003807084
+  Final cost: 638.17
+[INFO] Testing: initial_temp=4111.11, alpha=0.999931, last_temp=0.005242824
+  Final cost: 656.33
+[INFO] Testing: initial_temp=4111.11, alpha=0.999933, last_temp=0.007119497
+  Final cost: 633.32
+[INFO] Testing: initial_temp=4111.11, alpha=0.999934, last_temp=0.009730109
+  Final cost: 634.16
+[INFO] Testing: initial_temp=4111.11, alpha=0.999936, last_temp=0.013202625
+  Final cost: 623.79
+[INFO] Testing: initial_temp=4111.11, alpha=0.999937, last_temp=0.018155567
+  Final cost: 622.80
+[INFO] Testing: initial_temp=4111.11, alpha=0.999939, last_temp=0.024618129
+  Final cost: 634.98
+[INFO] Testing: initial_temp=4111.11, alpha=0.999941, last_temp=0.033681235
+  Final cost: 624.01
+[INFO] Testing: initial_temp=4111.11, alpha=0.999942, last_temp=0.046056246
+  Final cost: 648.29
+[INFO] Testing: initial_temp=4111.11, alpha=0.999944, last_temp=0.062744675
+  Final cost: 650.83
+[INFO] Testing: initial_temp=4111.11, alpha=0.999945, last_temp=0.085755343
+  Final cost: 643.73
+[INFO] Testing: initial_temp=4111.11, alpha=0.999947, last_temp=0.116790526
+  Final cost: 634.40
+[INFO] Testing: initial_temp=4111.11, alpha=0.999948, last_temp=0.159618937
+  Final cost: 653.64
+[INFO] Testing: initial_temp=4111.11, alpha=0.999950, last_temp=0.217023938
+  Final cost: 648.61
+[INFO] Testing: initial_temp=4222.22, alpha=0.999920, last_temp=0.000606119
+  Final cost: 629.91
+[INFO] Testing: initial_temp=4222.22, alpha=0.999922, last_temp=0.000824890
+  Final cost: 638.28
+[INFO] Testing: initial_temp=4222.22, alpha=0.999923, last_temp=0.001122751
+  Final cost: 644.33
+[INFO] Testing: initial_temp=4222.22, alpha=0.999925, last_temp=0.001534910
+  Final cost: 626.50
+[INFO] Testing: initial_temp=4222.22, alpha=0.999926, last_temp=0.002100708
+  Final cost: 615.82
+[INFO] Testing: initial_temp=4222.22, alpha=0.999928, last_temp=0.002861289
+  Final cost: 641.93
+[INFO] Testing: initial_temp=4222.22, alpha=0.999929, last_temp=0.003938485
+  Final cost: 632.03
+[INFO] Testing: initial_temp=4222.22, alpha=0.999931, last_temp=0.005314076
+  Final cost: 631.51
+[INFO] Testing: initial_temp=4222.22, alpha=0.999933, last_temp=0.007321281
+  Final cost: 658.51
+[INFO] Testing: initial_temp=4222.22, alpha=0.999934, last_temp=0.009918415
+  Final cost: 654.06
+[INFO] Testing: initial_temp=4222.22, alpha=0.999936, last_temp=0.013496041
+  Final cost: 634.31
+[INFO] Testing: initial_temp=4222.22, alpha=0.999937, last_temp=0.018652098
+  Final cost: 630.20
+[INFO] Testing: initial_temp=4222.22, alpha=0.999939, last_temp=0.025294291
+  Final cost: 697.10
+[INFO] Testing: initial_temp=4222.22, alpha=0.999941, last_temp=0.034548362
+  Final cost: 610.47
+[INFO] Testing: initial_temp=4222.22, alpha=0.999942, last_temp=0.046978961
+  Final cost: 621.61
+[INFO] Testing: initial_temp=4222.22, alpha=0.999944, last_temp=0.064505835
+  Final cost: 629.09
+[INFO] Testing: initial_temp=4222.22, alpha=0.999945, last_temp=0.087971873
+  Final cost: 641.52
+[INFO] Testing: initial_temp=4222.22, alpha=0.999947, last_temp=0.120093772
+  Final cost: 643.35
+[INFO] Testing: initial_temp=4222.22, alpha=0.999948, last_temp=0.162879399
+  Final cost: 643.11
+[INFO] Testing: initial_temp=4222.22, alpha=0.999950, last_temp=0.222533103
+  Final cost: 666.07
+[INFO] Testing: initial_temp=4333.33, alpha=0.999920, last_temp=0.000620926
+  Final cost: 652.38
+[INFO] Testing: initial_temp=4333.33, alpha=0.999922, last_temp=0.000846665
+  Final cost: 638.59
+[INFO] Testing: initial_temp=4333.33, alpha=0.999923, last_temp=0.001155489
+  Final cost: 641.30
+[INFO] Testing: initial_temp=4333.33, alpha=0.999925, last_temp=0.001576133
+  Final cost: 627.17
+[INFO] Testing: initial_temp=4333.33, alpha=0.999926, last_temp=0.002152180
+  Final cost: 660.86
+[INFO] Testing: initial_temp=4333.33, alpha=0.999928, last_temp=0.002926017
+  Final cost: 661.39
+[INFO] Testing: initial_temp=4333.33, alpha=0.999929, last_temp=0.004023641
+  Final cost: 632.33
+[INFO] Testing: initial_temp=4333.33, alpha=0.999931, last_temp=0.005453544
+  Final cost: 649.45
+[INFO] Testing: initial_temp=4333.33, alpha=0.999933, last_temp=0.007532192
+  Final cost: 631.64
+[INFO] Testing: initial_temp=4333.33, alpha=0.999934, last_temp=0.010219689
+  Final cost: 644.54
+[INFO] Testing: initial_temp=4333.33, alpha=0.999936, last_temp=0.013952967
+  Final cost: 670.28
+[INFO] Testing: initial_temp=4333.33, alpha=0.999937, last_temp=0.019052036
+  Final cost: 638.48
+[INFO] Testing: initial_temp=4333.33, alpha=0.999939, last_temp=0.025996411
+  Final cost: 647.91
+[INFO] Testing: initial_temp=4333.33, alpha=0.999941, last_temp=0.035474404
+  Final cost: 653.94
+[INFO] Testing: initial_temp=4333.33, alpha=0.999942, last_temp=0.048413853
+  Final cost: 632.84
+[INFO] Testing: initial_temp=4333.33, alpha=0.999944, last_temp=0.065750051
+  Final cost: 644.08
+[INFO] Testing: initial_temp=4333.33, alpha=0.999945, last_temp=0.089843222
+  Final cost: 636.35
+[INFO] Testing: initial_temp=4333.33, alpha=0.999947, last_temp=0.122665853
+  Final cost: 647.88
+[INFO] Testing: initial_temp=4333.33, alpha=0.999948, last_temp=0.168194926
+  Final cost: 629.67
+[INFO] Testing: initial_temp=4333.33, alpha=0.999950, last_temp=0.229878640
+  Final cost: 631.78
+[INFO] Testing: initial_temp=4444.44, alpha=0.999920, last_temp=0.000639196
+  Final cost: 621.23
+[INFO] Testing: initial_temp=4444.44, alpha=0.999922, last_temp=0.000865994
+  Final cost: 639.81
+[INFO] Testing: initial_temp=4444.44, alpha=0.999923, last_temp=0.001190411
+  Final cost: 638.39
+[INFO] Testing: initial_temp=4444.44, alpha=0.999925, last_temp=0.001622642
+  Final cost: 636.23
+[INFO] Testing: initial_temp=4444.44, alpha=0.999926, last_temp=0.002231240
+  Final cost: 649.94
+[INFO] Testing: initial_temp=4444.44, alpha=0.999928, last_temp=0.003013621
+  Final cost: 662.20
+[INFO] Testing: initial_temp=4444.44, alpha=0.999929, last_temp=0.004155434
+  Final cost: 641.85
+[INFO] Testing: initial_temp=4444.44, alpha=0.999931, last_temp=0.005609599
+  Final cost: 637.64
+[INFO] Testing: initial_temp=4444.44, alpha=0.999933, last_temp=0.007696753
+  Final cost: 652.24
+[INFO] Testing: initial_temp=4444.44, alpha=0.999934, last_temp=0.010487940
+  Final cost: 620.73
+[INFO] Testing: initial_temp=4444.44, alpha=0.999936, last_temp=0.014241066
+  Final cost: 636.15
+[INFO] Testing: initial_temp=4444.44, alpha=0.999937, last_temp=0.019503868
+  Final cost: 623.04
+[INFO] Testing: initial_temp=4444.44, alpha=0.999939, last_temp=0.026649965
+  Final cost: 634.96
+[INFO] Testing: initial_temp=4444.44, alpha=0.999941, last_temp=0.036179008
+  Final cost: 626.49
+[INFO] Testing: initial_temp=4444.44, alpha=0.999942, last_temp=0.049380013
+  Final cost: 628.06
+[INFO] Testing: initial_temp=4444.44, alpha=0.999944, last_temp=0.067946782
+  Final cost: 650.75
+[INFO] Testing: initial_temp=4444.44, alpha=0.999945, last_temp=0.092525970
+  Final cost: 656.45
+[INFO] Testing: initial_temp=4444.44, alpha=0.999947, last_temp=0.125991838
+  Final cost: 634.92
+[INFO] Testing: initial_temp=4444.44, alpha=0.999948, last_temp=0.172311972
+  Final cost: 660.84
+[INFO] Testing: initial_temp=4444.44, alpha=0.999950, last_temp=0.234949181
+  Final cost: 641.25
+[INFO] Testing: initial_temp=4555.56, alpha=0.999920, last_temp=0.000651621
+  Final cost: 647.77
+[INFO] Testing: initial_temp=4555.56, alpha=0.999922, last_temp=0.000891900
+  Final cost: 665.87
+[INFO] Testing: initial_temp=4555.56, alpha=0.999923, last_temp=0.001218204
+  Final cost: 677.21
+[INFO] Testing: initial_temp=4555.56, alpha=0.999925, last_temp=0.001658458
+  Final cost: 647.33
+[INFO] Testing: initial_temp=4555.56, alpha=0.999926, last_temp=0.002282139
+  Final cost: 641.68
+[INFO] Testing: initial_temp=4555.56, alpha=0.999928, last_temp=0.003097214
+  Final cost: 630.07
+[INFO] Testing: initial_temp=4555.56, alpha=0.999929, last_temp=0.004257218
+  Final cost: 670.37
+[INFO] Testing: initial_temp=4555.56, alpha=0.999931, last_temp=0.005740332
+  Final cost: 635.62
+[INFO] Testing: initial_temp=4555.56, alpha=0.999933, last_temp=0.007869531
+  Final cost: 649.77
+[INFO] Testing: initial_temp=4555.56, alpha=0.999934, last_temp=0.010765002
+  Final cost: 640.51
+[INFO] Testing: initial_temp=4555.56, alpha=0.999936, last_temp=0.014688297
+  Final cost: 644.48
+[INFO] Testing: initial_temp=4555.56, alpha=0.999937, last_temp=0.020000231
+  Final cost: 641.56
+[INFO] Testing: initial_temp=4555.56, alpha=0.999939, last_temp=0.027356270
+  Final cost: 639.26
+[INFO] Testing: initial_temp=4555.56, alpha=0.999941, last_temp=0.037260348
+  Final cost: 626.60
+[INFO] Testing: initial_temp=4555.56, alpha=0.999942, last_temp=0.051005760
+  Final cost: 634.42
+[INFO] Testing: initial_temp=4555.56, alpha=0.999944, last_temp=0.069164682
+  Final cost: 643.86
+[INFO] Testing: initial_temp=4555.56, alpha=0.999945, last_temp=0.094357551
+  Final cost: 628.78
+[INFO] Testing: initial_temp=4555.56, alpha=0.999947, last_temp=0.129073001
+  Final cost: 646.18
+[INFO] Testing: initial_temp=4555.56, alpha=0.999948, last_temp=0.176838549
+  Final cost: 643.91
+[INFO] Testing: initial_temp=4555.56, alpha=0.999950, last_temp=0.241715628
+  Final cost: 647.23
+[INFO] Testing: initial_temp=4666.67, alpha=0.999920, last_temp=0.000668048
+  Final cost: 648.58
+[INFO] Testing: initial_temp=4666.67, alpha=0.999922, last_temp=0.000917675
+  Final cost: 632.54
+[INFO] Testing: initial_temp=4666.67, alpha=0.999923, last_temp=0.001250893
+  Final cost: 615.50
+[INFO] Testing: initial_temp=4666.67, alpha=0.999925, last_temp=0.001701339
+  Final cost: 658.14
+[INFO] Testing: initial_temp=4666.67, alpha=0.999926, last_temp=0.002331951
+  Final cost: 631.19
+[INFO] Testing: initial_temp=4666.67, alpha=0.999928, last_temp=0.003175731
+  Final cost: 644.07
+[INFO] Testing: initial_temp=4666.67, alpha=0.999929, last_temp=0.004316681
+  Final cost: 625.70
+[INFO] Testing: initial_temp=4666.67, alpha=0.999931, last_temp=0.005885208
+  Final cost: 627.88
+[INFO] Testing: initial_temp=4666.67, alpha=0.999933, last_temp=0.008054413
+  Final cost: 658.53
+[INFO] Testing: initial_temp=4666.67, alpha=0.999934, last_temp=0.011059532
+  Final cost: 640.09
+[INFO] Testing: initial_temp=4666.67, alpha=0.999936, last_temp=0.015022413
+  Final cost: 647.74
+[INFO] Testing: initial_temp=4666.67, alpha=0.999937, last_temp=0.020447019
+  Final cost: 656.19
+[INFO] Testing: initial_temp=4666.67, alpha=0.999939, last_temp=0.028044035
+  Final cost: 663.31
+[INFO] Testing: initial_temp=4666.67, alpha=0.999941, last_temp=0.038237302
+  Final cost: 645.14
+[INFO] Testing: initial_temp=4666.67, alpha=0.999942, last_temp=0.052171210
+  Final cost: 645.20
+[INFO] Testing: initial_temp=4666.67, alpha=0.999944, last_temp=0.071179577
+  Final cost: 658.70
+[INFO] Testing: initial_temp=4666.67, alpha=0.999945, last_temp=0.097157586
+  Final cost: 664.39
+[INFO] Testing: initial_temp=4666.67, alpha=0.999947, last_temp=0.132375847
+  Final cost: 632.96
+[INFO] Testing: initial_temp=4666.67, alpha=0.999948, last_temp=0.180071033
+  Final cost: 654.32
+[INFO] Testing: initial_temp=4666.67, alpha=0.999950, last_temp=0.247178179
+  Final cost: 634.95
+[INFO] Testing: initial_temp=4777.78, alpha=0.999920, last_temp=0.000685927
+  Final cost: 641.38
+[INFO] Testing: initial_temp=4777.78, alpha=0.999922, last_temp=0.000933063
+  Final cost: 657.41
+[INFO] Testing: initial_temp=4777.78, alpha=0.999923, last_temp=0.001273805
+  Final cost: 639.48
+[INFO] Testing: initial_temp=4777.78, alpha=0.999925, last_temp=0.001746836
+  Final cost: 641.48
+[INFO] Testing: initial_temp=4777.78, alpha=0.999926, last_temp=0.002376591
+  Final cost: 642.51
+[INFO] Testing: initial_temp=4777.78, alpha=0.999928, last_temp=0.003226587
+  Final cost: 628.77
+[INFO] Testing: initial_temp=4777.78, alpha=0.999929, last_temp=0.004446973
+  Final cost: 642.48
+[INFO] Testing: initial_temp=4777.78, alpha=0.999931, last_temp=0.006084615
+  Final cost: 636.58
+[INFO] Testing: initial_temp=4777.78, alpha=0.999933, last_temp=0.008238411
+  Final cost: 634.72
+[INFO] Testing: initial_temp=4777.78, alpha=0.999934, last_temp=0.011306477
+  Final cost: 639.17
+[INFO] Testing: initial_temp=4777.78, alpha=0.999936, last_temp=0.015451361
+  Final cost: 629.36
+[INFO] Testing: initial_temp=4777.78, alpha=0.999937, last_temp=0.021065381
+  Final cost: 637.61
+[INFO] Testing: initial_temp=4777.78, alpha=0.999939, last_temp=0.028687219
+  Final cost: 611.26
+[INFO] Testing: initial_temp=4777.78, alpha=0.999941, last_temp=0.039068630
+  Final cost: 620.20
+[INFO] Testing: initial_temp=4777.78, alpha=0.999942, last_temp=0.053209670
+  Final cost: 630.74
+[INFO] Testing: initial_temp=4777.78, alpha=0.999944, last_temp=0.072399806
+  Final cost: 618.99
+[INFO] Testing: initial_temp=4777.78, alpha=0.999945, last_temp=0.099047067
+  Final cost: 641.68
+[INFO] Testing: initial_temp=4777.78, alpha=0.999947, last_temp=0.135938935
+  Final cost: 643.95
+[INFO] Testing: initial_temp=4777.78, alpha=0.999948, last_temp=0.184491617
+  Final cost: 618.43
+[INFO] Testing: initial_temp=4777.78, alpha=0.999950, last_temp=0.252646153
+  Final cost: 650.16
+[INFO] Testing: initial_temp=4888.89, alpha=0.999920, last_temp=0.000699021
+  Final cost: 650.63
+[INFO] Testing: initial_temp=4888.89, alpha=0.999922, last_temp=0.000959942
+  Final cost: 664.08
+[INFO] Testing: initial_temp=4888.89, alpha=0.999923, last_temp=0.001301127
+  Final cost: 665.44
+[INFO] Testing: initial_temp=4888.89, alpha=0.999925, last_temp=0.001790692
+  Final cost: 642.31
+[INFO] Testing: initial_temp=4888.89, alpha=0.999926, last_temp=0.002435806
+  Final cost: 613.62
+[INFO] Testing: initial_temp=4888.89, alpha=0.999928, last_temp=0.003310206
+  Final cost: 640.76
+[INFO] Testing: initial_temp=4888.89, alpha=0.999929, last_temp=0.004560673
+  Final cost: 628.65
+[INFO] Testing: initial_temp=4888.89, alpha=0.999931, last_temp=0.006187174
+  Final cost: 642.46
+[INFO] Testing: initial_temp=4888.89, alpha=0.999933, last_temp=0.008419785
+  Final cost: 657.94
+[INFO] Testing: initial_temp=4888.89, alpha=0.999934, last_temp=0.011481459
+  Final cost: 649.76
+[INFO] Testing: initial_temp=4888.89, alpha=0.999936, last_temp=0.015731703
+  Final cost: 595.66
+[INFO] Testing: initial_temp=4888.89, alpha=0.999937, last_temp=0.021493259
+  Final cost: 642.99
+[INFO] Testing: initial_temp=4888.89, alpha=0.999939, last_temp=0.029270251
+  Final cost: 645.12
+[INFO] Testing: initial_temp=4888.89, alpha=0.999941, last_temp=0.039818217
+  Final cost: 643.60
+[INFO] Testing: initial_temp=4888.89, alpha=0.999942, last_temp=0.054554388
+  Final cost: 650.98
+[INFO] Testing: initial_temp=4888.89, alpha=0.999944, last_temp=0.074556483
+  Final cost: 631.51
+[INFO] Testing: initial_temp=4888.89, alpha=0.999945, last_temp=0.101128820
+  Final cost: 622.27
+[INFO] Testing: initial_temp=4888.89, alpha=0.999947, last_temp=0.138458472
+  Final cost: 647.02
+[INFO] Testing: initial_temp=4888.89, alpha=0.999948, last_temp=0.188937983
+  Final cost: 650.29
+[INFO] Testing: initial_temp=4888.89, alpha=0.999950, last_temp=0.257901922
+  Final cost: 652.99
+[INFO] Testing: initial_temp=5000.00, alpha=0.999920, last_temp=0.000722844
+  Final cost: 647.25
+[INFO] Testing: initial_temp=5000.00, alpha=0.999922, last_temp=0.000979759
+  Final cost: 621.38
+[INFO] Testing: initial_temp=5000.00, alpha=0.999923, last_temp=0.001329574
+  Final cost: 647.90
+[INFO] Testing: initial_temp=5000.00, alpha=0.999925, last_temp=0.001832217
+  Final cost: 623.88
+[INFO] Testing: initial_temp=5000.00, alpha=0.999926, last_temp=0.002477071
+  Final cost: 631.71
+[INFO] Testing: initial_temp=5000.00, alpha=0.999928, last_temp=0.003384217
+  Final cost: 641.04
+[INFO] Testing: initial_temp=5000.00, alpha=0.999929, last_temp=0.004615239
+  Final cost: 646.39
+[INFO] Testing: initial_temp=5000.00, alpha=0.999931, last_temp=0.006319508
+  Final cost: 632.66
+[INFO] Testing: initial_temp=5000.00, alpha=0.999933, last_temp=0.008648353
+  Final cost: 651.95
+[INFO] Testing: initial_temp=5000.00, alpha=0.999934, last_temp=0.011753222
+  Final cost: 629.22
+[INFO] Testing: initial_temp=5000.00, alpha=0.999936, last_temp=0.016105781
+  Final cost: 626.56
+[INFO] Testing: initial_temp=5000.00, alpha=0.999937, last_temp=0.021881465
+  Final cost: 638.97
+[INFO] Testing: initial_temp=5000.00, alpha=0.999939, last_temp=0.030321771
+  Final cost: 618.39
+[INFO] Testing: initial_temp=5000.00, alpha=0.999941, last_temp=0.040730443
+  Final cost: 650.72
+[INFO] Testing: initial_temp=5000.00, alpha=0.999942, last_temp=0.055597560
+  Final cost: 640.78
+[INFO] Testing: initial_temp=5000.00, alpha=0.999944, last_temp=0.076578011
+  Final cost: 635.89
+[INFO] Testing: initial_temp=5000.00, alpha=0.999945, last_temp=0.103778808
+  Final cost: 633.89
+[INFO] Testing: initial_temp=5000.00, alpha=0.999947, last_temp=0.141552572
+  Final cost: 633.10
+[INFO] Testing: initial_temp=5000.00, alpha=0.999948, last_temp=0.193341695
+  Final cost: 642.77
+[INFO] Testing: initial_temp=5000.00, alpha=0.999950, last_temp=0.265908542
+  Final cost: 637.56
+
+=== Najlepsze znalezione parametry ===
+Initial Temp: 4888.888888888889
+Alfa: 0.9999357894736842
+Najlepszy koszt: 595.66
+Zapisano wykres trasy do: ./outputs/06/best_route.png
+Zapisano wykres kosztu (liniowy) do: ./outputs/06/best_cost.png
+Zapisano wykres kosztu (log-x) do: ./outputs/06/best_cost_logx.png

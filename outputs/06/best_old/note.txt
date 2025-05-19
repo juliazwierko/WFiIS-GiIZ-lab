@@ -1,0 +1,10 @@
+=== Najlepsze znalezione parametry ===
+Initial Temp: 510.0
+Alfa: 0.9999866666666667
+Najlepszy koszt: 584.04
+Zapisano wykres trasy do: ./outputs/06/best_route.png
+Zapisano wykres kosztu (liniowy) do: ./outputs/06/best_cost.png
+Zapisano wykres kosztu (log-x) do: ./outputs/06/best_cost_logx.png
+
+
+max_iter=1100000
