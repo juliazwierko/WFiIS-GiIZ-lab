@@ -1,4 +1,4 @@
-from Algorithms import generate_random_flow_network
+from Algorithms import *
 from DrawGraph import *
 
 if __name__ == '__main__':
@@ -12,7 +12,17 @@ if __name__ == '__main__':
     # należy następnie dodać 2N łuków w sposób losowy. Łuki mają być losowane bez preferencji kierunku, tzn. nie muszą być skierowane zgodnie z warstwami. 
     # Należy jednak zwrócić uwagę, żeby nie dodać łuku już istniejącego i żeby nie dodać łuku wchodzącego do źródła albo wychodzącego z ujścia. 
     # Na tak otrzymanym digrafie przypisać każdemu łukowi liczbę naturalną z zakresu [1, 10] mającą interpretację przepustowości. Zakodować i narysować otrzymaną sieć.
-    network = generate_random_flow_network(2, 0.5)
+    network = generate_random_flow_network(3, 0.5)
     Draw_Flow_Network(network, legend_title='Flow Network', filename = 'flow_network.png', output_dir='outputs/05')
     
     # Zadanie 2
+    # Zastosować algorytm Forda-Fulkersona do znalezienia maksymalnego
+    # przepływu na sieci z zadania pierwszego. Ścieżki powiększające wybie-
+    # rać jako ścieżki o najmniejszej liczbie krawędzi. Do ich wyszukiwania
+    # użyć przeszukiwania wszerz.
+    source = 0
+    sink = network.n - 1
+
+    max_flow, residual_graph = ford_fulkerson_edmonds_karp_with_debug(network, source, sink)
+    print("Maksymalny przepływ:", max_flow)
+    Draw_Residual_Network(graph=network, residual_graph=residual_graph, legend_title='Residual Network', filename='residual_network.png', output_dir='outputs/05/')    

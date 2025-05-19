@@ -146,7 +146,3 @@ class FlowNetwork(DirectedAdjacencyList):
     def refactor_adjacency_matrix(self, new_n):
         self.adj = [self.adj[n] for n in range(new_n)]
         
-
-
-
-
