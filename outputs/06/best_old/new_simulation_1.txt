@@ -1,7 +1,3 @@
-initial_temp_values = np.linspace(3500, 4500, 10)
-beta_values = np.linspace(2000, 8000, 20)
-
-[fedora@krzemon Grafy]$ python3 zestaw06.py
 [INFO] Testing: initial_temp=3500.0, alpha=2000.0
   Final cost: 671.43
 [INFO] Testing: initial_temp=3500.0, alpha=2315.7894736842104
@@ -402,11 +398,3 @@ beta_values = np.linspace(2000, 8000, 20)
   Final cost: 651.06
 [INFO] Testing: initial_temp=4500.0, alpha=8000.0
   Final cost: 641.22
-
-=== Najlepsze znalezione parametry ===
-Initial Temp: 4388.888888888889
-Alpha: 2315.7894736842104
-Najlepszy koszt: 610.12
-Zapisano wykres trasy do: ./outputs/06/best_route.png
-Zapisano wykres kosztu (liniowy) do: ./outputs/06/best_cost.png
-Zapisano wykres kosztu (log-x) do: ./outputs/06/best_cost_logx.png
