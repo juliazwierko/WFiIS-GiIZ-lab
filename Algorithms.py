@@ -68,79 +68,89 @@ def kosaraju(graph: DirectedAdjacencyList) -> dict[int, int]:
 
 
 def bellman_ford(g_list, weights, source):
-    """
-    Implementacja algorytmu Bellmana-Forda zgodnie z pseudokodem.
-    Zwraca:
-    - (False, _) jeśli istnieje cykl ujemny osiągalny ze źródła,
-    - (True, ds) jeśli nie istnieje (gdzie ds[v] to najkrótsza ścieżka z s do v)
-    """
     n = g_list.n
     dist = [float('inf')] * n
     dist[source] = 0
-
     for _ in range(n - 1):
         for u in range(n):
             for v in g_list.adj[u]:
                 if dist[u] + weights[(u, v)] < dist[v]:
                     dist[v] = dist[u] + weights[(u, v)]
-
     for u in range(n):
         for v in g_list.adj[u]:
             if dist[u] + weights[(u, v)] < dist[v]:
-                raise ValueError("Wykryto cykl o ujemnej wadze!")
-
-    return dist
+                return False, None
+    return True, dist
 
 def add_s(graph: DirectedAdjacencyList) -> tuple[DirectedAdjacencyList, int, dict[tuple[int, int], int]]:
     """
     Dodaje sztuczny wierzchołek s połączony z wagą 0 z wszystkimi innymi.
-    Zwraca nowy graf G0, numer nowego wierzchołka s oraz nową macierz wag.
+    Zwraca nowy graf G0, numer nowego wierzchołka s oraz nowy słownik wag.
     """
     G0 = graph.copy()
     n = G0.num_vertices()
     G0.n += 1
-    G0.adj.append([])  # nowy wierzchołek s
-
-    # skopiuj istniejące wagi
-    w_new = dict(graph.weighted_edges)
-
-    # dodaj krawędzie (s, v) z wagą 0
+    G0.adj.append([])  # Nowy wierzchołek s
+    G0.m += n  # Zwiększamy liczbę krawędzi o nowe krawędzie z s
+    w_new = dict(graph.weighted_edges)  # Kopiujemy wagi
     for v in range(n):
-        G0.adj[n].append(v)
+        G0.add_edge(n, v, lambda: 0)  # Dodajemy krawędzie s -> v z wagą 0
         w_new[(n, v)] = 0
-
     return G0, n, w_new
+
+def dijkstra(graph: DirectedAdjacencyList, source: int, weights: dict[tuple[int, int], int]) -> list[float]:
+    """
+    Implementacja algorytmu Dijkstry z kolejką priorytetową.
+    Zakłada nieujemne wagi krawędzi.
+    Zwraca listę odległości od źródła do każdego wierzchołka.
+    """
+    n = graph.n
+    dist = [float('inf')] * n
+    dist[source] = 0
+    pq = [(0, source)]  # (odległość, wierzchołek)
+    visited = [False] * n
+
+    while pq:
+        d, u = heapq.heappop(pq)
+        if visited[u]:
+            continue
+        visited[u] = True
+        for v in graph.adj[u]:
+            if not visited[v]:
+                new_dist = dist[u] + weights[(u, v)]
+                if new_dist < dist[v]:
+                    dist[v] = new_dist
+                    heapq.heappush(pq, (new_dist, v))
+    return dist
 
 def carl_johnson(graph: DirectedAdjacencyList) -> list[list[float]]:
     """
-    Algorytm Johnsona (Nie mial na imie Carl) do znajdowania najkrótszych ścieżek między wszystkimi parami.
-    Zwraca macierz odległości D.
+    Algorytm Johnsona do znajdowania najkrótszych ścieżek między wszystkimi parami.
+    Zwraca macierz odległości D, gdzie D[u][v] to długość najkrótszej ścieżki z u do v.
     """
-    G0, s, w = add_s(graph)  # krok 1
-
-    ok, ds = bellman_ford(G0, w, s)  # krok 2
+    # Krok 1: Dodajemy wierzchołek s i obliczamy odległości od s
+    G0, s, w = add_s(graph)
+    ok, ds = bellman_ford(G0, w, s)
     if not ok:
-        raise ValueError("Graf zawiera cykl o ujemnej wadze.")  # krok 3
+        raise ValueError("Graf zawiera cykl o ujemnej wadze.")
 
-    h = ds.copy()  # krok 6
-
-    # krok 8–10: przeskalowanie wag
+    # Krok 2: Reważenie wag
+    h = ds.copy()
     w_reweighted = {}
     for (u, v), weight in graph.weighted_edges.items():
         w_reweighted[(u, v)] = weight + h[u] - h[v]
 
-    # krok 11: macierz D
+    # Krok 3: Obliczanie najkrótszych ścieżek za pomocą Dijkstry
     n = graph.num_vertices()
-    D = [[math.inf] * n for _ in range(n)]
-
-    # krok 12–17: Dijkstra i przeskalowanie wyników
+    D = [[float('inf')] * n for _ in range(n)]
     for u in range(n):
-        dist = dijkstra(graph, u, w_reweighted)  # krok 13
+        D[u][u] = 0  # Odległość do siebie to 0
+        dist = dijkstra(graph, u, w_reweighted)
         for v in range(n):
-            if dist[v] < math.inf:
-                D[u][v] = dist[v] - h[u] + h[v]  # krok 15
+            if dist[v] < float('inf'):
+                D[u][v] = dist[v] - h[u] + h[v]
 
-    return D  # krok 18
+    return D
 
 # Zestaw 5 ------------------------------------------------------------
         

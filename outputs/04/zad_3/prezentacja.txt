@@ -1,0 +1,22 @@
+Znaleziono graf silnie spójny bez cykli ujemnych!
+
+Najkrótsze ścieżki od wierzchołka 0:
+  0 -> 0: 0
+  0 -> 1: 5
+    Ścieżka: 0 -> 5 -> 3 -> 2 -> 1
+    Suma wag na ścieżce: 5
+  0 -> 2: 10
+    Ścieżka: 0 -> 5 -> 3 -> 2
+    Suma wag na ścieżce: 10
+  0 -> 3: 13
+    Ścieżka: 0 -> 5 -> 3
+    Suma wag na ścieżce: 13
+  0 -> 4: 6
+    Ścieżka: 0 -> 5 -> 3 -> 2 -> 1 -> 6 -> 4
+    Suma wag na ścieżce: 6
+  0 -> 5: 4
+    Ścieżka: 0 -> 5
+    Suma wag na ścieżce: 4
+  0 -> 6: 2
+    Ścieżka: 0 -> 5 -> 3 -> 2 -> 1 -> 6
+    Suma wag na ścieżce: 2

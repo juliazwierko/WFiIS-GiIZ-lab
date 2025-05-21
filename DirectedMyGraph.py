@@ -10,7 +10,7 @@ class DirectedAdjacencyList:
         self.adj = [[] for _ in range(n)]
         self.weighted_edges = {}
 
-    def add_edge(self, u, v, func = lambda:random.randint(1,10)):
+    def add_edge(self, u, v, func=lambda: random.randint(1, 10)):
         """
         Dodaje skierowany łuk u -> v (bez pętli i duplikatów).
         """
@@ -21,7 +21,7 @@ class DirectedAdjacencyList:
                 self.adj[u].append(v)
                 self.m += 1
                 self.weighted_edges[(u, v)] = func()
-                
+
     def set_edge_weight(self, u, v, weight: int):
         """
         Ustawia wagę łuku (u, v), jeśli istnieje.
@@ -42,8 +42,8 @@ class DirectedAdjacencyList:
     def copy(self) -> "DirectedAdjacencyList":
         new = DirectedAdjacencyList(self.n)
         new.m = self.m
-        # skopiuj listy sąsiedztwa
         new.adj = [nbrs.copy() for nbrs in self.adj]
+        new.weighted_edges = self.weighted_edges.copy()  # Copy weights as well
         return new
 
     def num_vertices(self) -> int:
@@ -58,7 +58,6 @@ class DirectedAdjacencyList:
         """Zwraca listę wierzchołków, do których wychodzą łuki z u."""
         return self.adj[u]
 
-
 class DirectedAdjacencyMatrix:
     """
     Prosty graf skierowany reprezentowany jako macierz sąsiedztwa.
@@ -68,7 +67,7 @@ class DirectedAdjacencyMatrix:
             n = source.n
             self.n = n
             self.m = source.m
-            self.matrix = [[0]*n for _ in range(n)]
+            self.matrix = [[0] * n for _ in range(n)]
             for u in range(n):
                 for v in source.adj[u]:
                     self.matrix[u][v] = 1
@@ -76,7 +75,7 @@ class DirectedAdjacencyMatrix:
             n = int(source)
             self.n = n
             self.m = 0
-            self.matrix = [[0]*n for _ in range(n)]
+            self.matrix = [[0] * n for _ in range(n)]
 
     def __str__(self):
         lines = []
@@ -96,13 +95,13 @@ class DirectedIncidenceMatrix:
             edges = []
             for u in range(n):
                 for v in source.adj[u]:
-                    edges.append((u,v))
+                    edges.append((u, v))
             m = len(edges)
             self.m = m
-            self.matrix = [[0]*m for _ in range(n)]
-            for idx,(u,v) in enumerate(edges):
+            self.matrix = [[0] * m for _ in range(n)]
+            for idx, (u, v) in enumerate(edges):
                 self.matrix[u][idx] = -1
-                self.matrix[v][idx] =  1
+                self.matrix[v][idx] = 1
         else:
             n = int(source)
             self.n = n
@@ -116,7 +115,6 @@ class DirectedIncidenceMatrix:
         for u in range(self.n):
             lines.append(' '.join(f'{self.matrix[u][e]:2}' for e in range(self.m)))
         return '\n'.join(lines)
-
 
 def generate_random_directed_graph_by_probability(n, p):
     """
@@ -139,10 +137,9 @@ class FlowNetwork(DirectedAdjacencyList):
     def __init__(self, size: int):
         super().__init__(size)
         self.network_layers: list[list[int]] = None
-        
+
     def edge_exists(self, u: int, v: int) -> bool:
         return (u, v) in self.weighted_edges
-    
+
     def refactor_adjacency_matrix(self, new_n):
         self.adj = [self.adj[n] for n in range(new_n)]
-        
