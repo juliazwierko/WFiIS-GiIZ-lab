@@ -42,56 +42,70 @@ if __name__ == "__main__":
     # Zadanie 1
     # Napisać program do kodowania grafów skierowanych (digrafów) i do generowania losowych digrafów z zespołu G(np).
     
-    # n = 7; p = 0.4
+    n = 7; p = 0.4
 
-    # g_list = generate_random_directed_graph_by_probability(n, p)
-    # print("Lista sąsiedztwa:")
-    # print(g_list)
-    # print()
-    # g_mat = DirectedAdjacencyMatrix(g_list)
-    # print("Macierz sąsiedztwa:")
-    # print(g_mat)
-    # print()
-    # g_inc = DirectedIncidenceMatrix(g_list)
-    # print("Macierz incydencji:")
-    # print(g_inc)
+    g_list = generate_random_directed_graph_by_probability(n, p)
+    print("Lista sąsiedztwa:")
+    print(g_list)
+    print()
+    g_mat = DirectedAdjacencyMatrix(g_list)
+    print("Macierz sąsiedztwa:")
+    print(g_mat)
+    print()
+    g_inc = DirectedIncidenceMatrix(g_list)
+    print("Macierz incydencji:")
+    print(g_inc)
 
 
-    ## konwersja do NetworkX DiGraph
+    # konwersja do NetworkX DiGraph
 
-    # G = nx.DiGraph()
-    # for u in range(g_list.n):
-    #     for v in g_list.adj[u]:
-    #         G.add_edge(u, v)
+    G = nx.DiGraph()
+    for u in range(g_list.n):
+        for v in g_list.adj[u]:
+            G.add_edge(u, v)
 
-    # # ustawienie pozycji na okręgu
-    # pos = nx.circular_layout(G)
+    # ustawienie pozycji na okręgu
+    pos = nx.circular_layout(G)
 
-    # # rysowanie
-    # plt.figure(figsize=(6,6))
-    # nx.draw(G, pos, with_labels=True, arrows=True, node_color="lightblue", edge_color="gray", 
-    #         font_weight="bold", font_size=10)
-    # plt.title(f"Digraf G({n}, {p})")
-    # plt.axis("off")
+    # rysowanie
+    plt.figure(figsize=(6,6))
+    nx.draw(G, pos, with_labels=True, arrows=True, node_color="lightblue", edge_color="gray", 
+            font_weight="bold", font_size=10)
+    plt.title(f"Digraf G({n}, {p})")
+    plt.axis("off")
 
-    ## plt.show()
+    filename = f"zadanie1_G({n},{p}).png"
+    output_dir = "outputs/04"
+    os.makedirs(output_dir, exist_ok=True)
+    save_path = os.path.join(output_dir, filename)
+    plt.savefig(save_path, bbox_inches="tight")
+    plt.close()
+
+    # plt.show()
 
     # Zadanie 2
     # Zaimplementować algorytm Kosaraju do szukania silnie spójnych składowych na digrafie i zastosować go do digrafu losowego
     # Przykładowe użycie: wygeneruj losowy graf i zastosuj algorytm
     # g_list = generate_random_directed_graph_by_probability(n, p)
 
-    # comp_map = kosaraju(g_list)
+    comp_map = kosaraju(g_list)
 
-    # # # Grupowanie wierzchołków według numeru składowej
-    # components: dict[int, list[int]] = {}
-    # for vertex, cid in comp_map.items():
-    #     components.setdefault(cid, []).append(vertex)
-    # print()
-    # print("Liczba silnie spójnych składowych:", len(components))
-    # for cid, vertices in components.items():
-    #     print(f"Składowa {cid}: {sorted(vertices)}")
+    # Grupowanie wierzchołków według numeru składowej
+    components: dict[int, list[int]] = {}
+    for vertex, cid in comp_map.items():
+        components.setdefault(cid, []).append(vertex)
+    print()
+    print("Liczba silnie spójnych składowych:", len(components))
+    for cid, vertices in components.items():
+        print(f"Składowa {cid}: {sorted(vertices)}")
     
+    filename = f"zadanie2_kosaraju_G({n},{p}).png"
+    output_dir = "outputs/04"
+    os.makedirs(output_dir, exist_ok=True)
+    save_path = os.path.join(output_dir, filename)
+    plt.savefig(save_path, bbox_inches="tight")
+    plt.close()
+
     # plt.show()
 
 
@@ -121,9 +135,9 @@ if __name__ == "__main__":
             # Debugowanie: sprawdzamy zgodność wag
             print("\nLista sąsiedztwa grafu:")
             print(graph)
-            print("\nWagi krawędzi (z weights):")
-            for (u, v), w in sorted(weights.items()):
-                print(f"  {u} -> {v}: {w}")
+            # print("\nWagi krawędzi (z weights):")
+            # for (u, v), w in sorted(weights.items()):
+            #     print(f"  {u} -> {v}: {w}")
             print("\nWagi krawędzi (z graph.weighted_edges):")
             for (u, v), w in sorted(graph.weighted_edges.items()):
                 print(f"  {u} -> {v}: {w}")
@@ -172,7 +186,6 @@ if __name__ == "__main__":
             path.reverse()
             if path[0] == source:
                 print(f"    Ścieżka: {' -> '.join(map(str, path))}")
-                print(f"    Suma wag na ścieżce: {path_weight}")
             else:
                 print(f"    Ścieżka: (brak ścieżki, wierzchołek nieosiągalny)")
 
@@ -190,13 +203,10 @@ if __name__ == "__main__":
         max_width = max(5, max(len(f"{D[u][v]:.1f}") for u in range(n) for v in range(n) if D[u][v] != float('inf')))
         max_width = max(max_width, len("inf"))  # Uwzględniamy "inf"
 
-        # Nagłówek wiersza z numerami wierzchołków
         print("     ", end="")
         for v in range(n):
             print(f"{v:>{max_width}} ", end="")
         print("\n" + "-" * (6 + n * (max_width + 1)))
-
-        # Wypisujemy macierz
         for u in range(n):
             print(f"{u:>2} | ", end="")
             for v in range(n):
